@@ -9,6 +9,7 @@ public final class UcretHesapla {
     'final' kelimesini SİLDİK. Artık değeri değişebilir.
     private static double SAATLIK_UCRET = 20.0;
 
+
  YENİ METOT: Fiyatı değiştirmek için
     public static void setSaatlikUcret(double yeniUcret) {
         SAATLIK_UCRET = yeniUcret;
@@ -38,9 +39,8 @@ public final class UcretHesapla {
         /*Math.ceil->Tavana yuvarlar.
         mesela 1 saati gectiyse artik o 2. saatin parasini öder*/
         double saat = Math.ceil(sureDakika / 60.0);
-        return saat * SAATLIK_UCRET; //saat basi 15 tl ile carpilacak.
+        return saat * SAATLIK_UCRET;
 
     }
-
 
 }
