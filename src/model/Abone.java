@@ -1,8 +1,11 @@
 package model;
 
-
+import ınterface.UcretHesaplayici;
 import exception.AboneKaydiBulunamadiException;
 
+public abstract class Abone implements UcretHesaplayici {
+    private String aboneId;
+    private String adSoyad;
 
 
     public Abone(String aboneId, String adSoyad) {
@@ -14,8 +17,13 @@ import exception.AboneKaydiBulunamadiException;
     public abstract double indirimOraniBelirle();
 
     // --- Getter'lar ve Setter'lar ---
-    public String getAboneId() { return aboneId; }
-    public String getAdSoyad() { return adSoyad; }
+    public String getAboneId() {
+        return aboneId;
+    }
+
+    public String getAdSoyad() {
+        return adSoyad;
+    }
 
     // Setter Kontrolü 2: Abone ID kontrolü
     public void setAboneId(String aboneId) throws AboneKaydiBulunamadiException {
@@ -24,3 +32,4 @@ import exception.AboneKaydiBulunamadiException;
         }
         this.aboneId = aboneId;
     }
+}
