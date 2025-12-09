@@ -24,4 +24,3 @@ import exception.AboneKaydiBulunamadiException;
         }
         this.aboneId = aboneId;
     }
-}
