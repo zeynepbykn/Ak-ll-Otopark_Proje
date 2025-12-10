@@ -1,4 +1,4 @@
-package ınterface;
+package interfaces;
 
 public interface UcretHesaplayici {
 }

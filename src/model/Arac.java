@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 // Kendi yazdığımız hata sınıfını çağırıyoruz. (Plaka hatalıysa fırlatacağız)
 import exception.GecersizMiktarException;
 
-import ınterface.GirisCikisTakip;
+import interfaces.GirisCikisTakip;
 
 /* Abstract sinifi soyuttur bi nevi ust baslik.
 Yani bi başlik içinde ortak ozellikleri  toplamak icin kullandildi.
