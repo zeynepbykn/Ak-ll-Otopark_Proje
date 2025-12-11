@@ -51,23 +51,24 @@ public class OtoparkService {
         }
     }
 
+
     public void aracGiris(Arac arac, int sira, int sutun) throws OtoparkDoluException {
-        // Eğer satır 0'dan küçükse VEYA sınırdan büyükse hata ver.
+        // Sinir kontrolu
         if (sira < 0 || sira >= MAX_SATIR || sutun < 0 || sutun >= MAX_SUTUN) {
             throw new OtoparkDoluException("Hata Gecersiz yer secimi !! Otopark sinirlari disinda.");
         }
+        ParkYeri hedefYer=parkMatrisi[sira][sutun];
         // Hedeflenen kutuyu (nesneyi) seçiyoruz ve "Dolu musun?" diye soruyoruz.
-        if (parkMatrisi[sira][sutun].isDoluMu()) {
-            throw new OtoparkDoluException("Hata :" + sira + ".kat" + sutun + " .sira zaten dolu!!");
-
+        if(hedefYer.isDoluMu()){
+            throw new OtoparkDoluException("DİKKAT: "+sira+".Kat, "+sutun+ ".sıra zaten dolu!!");
         }
+
         //Park etme islemi
         //Aracin kendi saatini baslatiyoruz.
         arac.girisYap();
 
         //Araci matrisin icine koyuyoruz.
-        //Artik o ParkYeri nesnesi bos degil.Icinde  bu araci sakliyor.
-        parkMatrisi[sira][sutun].parkEt(arac);
+       hedefYer.parkEt(arac);
 
         //Deftere kayit(MAP)
         //Plakayi anahtar, park yerini deger olarak kaydediyoruz.
@@ -76,11 +77,16 @@ public class OtoparkService {
          Map'e eklediğimizde yer numarası bilgisi de otomatik olarak kaydedilmiş olur.
        */
         parktakiAraclar.put(arac.getPlaka(),parkMatrisi[sira][sutun]);// o parkMatrisi[i][j]->oradaki nesneyi cagiririz
+
+        //Basarı Mesaji
+        System.out.println("Arac basariyla "+sira+". Kat, "+sutun+". Sıraya park edildi.");
+        System.out.println("KAYT: Plaka ("+arac.getPlaka() +") Map listesine kaydedildi.");
     }
 
 //Cikmak isteyen aracin borccunu hesaplar,tahsil eder ve otoparki siler
     public double aracCikis(String plaka) throws AboneKaydiBulunamadiException{
         //Plakadan bize o aracin durdugu parkYeri nesnesini veriyor.
+        //get.(key) diuerek value degerini cagiririz.
         ParkYeri yer=parktakiAraclar.get(plaka);
         if(yer==null){
             throw new AboneKaydiBulunamadiException("Hata : Bu playa ait arac otoparkta bulunmuyor!.");

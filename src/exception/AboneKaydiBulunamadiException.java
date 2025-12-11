@@ -1,7 +1,7 @@
 package exception;
 
-public class AboneKaydiBulunamadiException extends RuntimeException {
-    public AboneKaydiBulunamadiException(String message) {
+public class AboneKaydiBulunamadiException extends Exception {
+    public AboneKaydiBulunamadiException(String message){
         super(message);
     }
 }
