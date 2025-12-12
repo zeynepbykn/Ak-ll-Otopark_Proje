@@ -1,10 +1,8 @@
 package model;// Bu sınıfın 'model' (Nesne) kutusunda olduğunu belirtir.
-
+import exception.HataliPlakaException;
 import java.time.LocalDateTime;
 
 // Kendi yazdığımız hata sınıfını çağırıyoruz. (Plaka hatalıysa fırlatacağız)
-import exception.GecersizMiktarException;
-
 import interfaces.GirisCikisTakip;
 
 /* Abstract sinifi soyuttur bi nevi ust baslik.
@@ -32,7 +30,7 @@ public abstract class Arac implements GirisCikisTakip {
             //Plakayi kaydetmek icin.
             // Direkt this.plaka = plaka atamasi yaparsak plaka kontrolunun anlami kalmaz.
             setPlaka(plaka);
-        } catch (GecersizMiktarException hataKutusu) {
+        } catch (HataliPlakaException hataKutusu) {
             // Eger plaka hataliysa program cokmesin, hatayi hataKutusunun icine atsin diye onlem.
             System.out.println(">>> HATA: Girilen '" + plaka + "' plakasi kurallara uymuyor!");
             System.out.println(">>> Sistem mesaji: " + hataKutusu.getMessage());
@@ -74,11 +72,9 @@ public String getPlaka() {
     yaratacagi icin bi kontrol sarti olmali fakat cok fazla sart oldugu ıcın standrt bir dongu
     verimsiz ve hataya acik bi kod yigini olacakti bu yuzden=Regex (Regular Expression) kullandim.
      */
-    public void setPlaka(String plaka) throws GecersizMiktarException {
-        //Plaka Kontrol adimlari
+    public void setPlaka(String plaka) throws HataliPlakaException {        //Plaka Kontrol adimlari
         if (plaka == null) {
-            throw new GecersizMiktarException("HATA: Plaka boş olamaz!");
-        }
+            throw new HataliPlakaException("HATA: Plaka boş olamaz!");        }
 
         // Küçük harf girildiyse buyuk  harfe çevirmek ve başta ve sonda(trim) olusmus olabilecek bosluklari temizlemek icin.
         plaka = plaka.trim().toUpperCase();
@@ -92,7 +88,7 @@ public String getPlaka() {
 
         if (!plaka.matches(globalPlakaKalibi)) {
             //Sartlara olan uygunlugunun kontrolu,
-            throw new GecersizMiktarException("HATA: Plaka geçersiz karakterler içeriyor veya uzunluk hatalı! (Girdi: " + plaka + ")");
+            throw new HataliPlakaException("HATA: Plaka geçersiz! (Girdi: " + plaka + ")");
         }
         // Her şey düzgünse kaydet.
         this.plaka = plaka;
