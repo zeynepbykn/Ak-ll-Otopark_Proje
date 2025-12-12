@@ -97,7 +97,9 @@ public class OtoparkService {
         LocalDateTime cikisZamani=LocalDateTime.now();//suan cikiyor.
         //util sinifindan  dakikaHesapla ile aracin toplam durdugu dk'yi alıyoruz.
         double sureDakika= UcretHesapla.parkSuresiDakikaHesapla(arac.getGirisZamani(),cikisZamani);
-        double ucret=UcretHesapla.standartUcretHesapla(sureDakika);
+
+        //double ucret=UcretHesapla.standartUcretHesapla(sureDakika);
+double ucret=arac.odenecekTutar(sureDakika);
 
         yer.cikisYap();//ParkYeri nesnesini bosalt.
         parktakiAraclar.remove(plaka);//Defterden (MAP) kaydi siliniyor.

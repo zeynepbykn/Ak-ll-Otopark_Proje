@@ -24,7 +24,7 @@ public abstract class Arac implements GirisCikisTakip {
     private boolean parktaMi;//(true/false) olarak
 
     /* Constructor nesne hafizada olusurken calisir
-    */
+     */
 
     //Plaka parametreli constructor
     public Arac(String plaka) {
@@ -48,7 +48,7 @@ public abstract class Arac implements GirisCikisTakip {
  Matris (2D Dizi) yapısında teknik olarak her hücre 1 araç tutar Yani aslinda verimlilik acisindan %100 degil fakat
  ArrayList<Arac> ile sadece arclarin girisini kaydetmek yerine matris ile kat konum bilgilerini ozel olarak tutmak istedik*/
 
-        public abstract String yerKaplamaDurumu();
+    public abstract String yerKaplamaDurumu();
 
     @Override
     public void girisYap() {
@@ -57,6 +57,7 @@ public abstract class Arac implements GirisCikisTakip {
         this.parktaMi = true;
         System.out.println(plaka + " giriş saati kaydedildi: " + girisZamani);
     }
+
     @Override
     public void cikisYap() {
         // Araç çıkış statüsüne geçer.
@@ -66,7 +67,7 @@ public abstract class Arac implements GirisCikisTakip {
 
     //Getter & Setter (Kontrollü Erişim) icin sadece plakanin ne oldugunu gostermek icin
     //Daha sonra diger siniflarda baska metotlarda ihityac duyulacagi icin
-public String getPlaka() {
+    public String getPlaka() {
         return plaka;
     }
 
@@ -87,7 +88,7 @@ public String getPlaka() {
         // [A-Z0-9 -]=Sadece Harf, Rakam, Bosluk ve Tire sarti icin.
         // {5,15}=En az 5, en cok 15 karakter sarti.
         //"^"Yazi tamamen plaka olmalı anlamina gelmesi icin.
-      //"$" Arkasından baska karakter gelmesini engellemek icin.
+        //"$" Arkasından baska karakter gelmesini engellemek icin.
         String globalPlakaKalibi = "^[A-Z0-9 -]{5,15}$";
 
         if (!plaka.matches(globalPlakaKalibi)) {
@@ -98,15 +99,23 @@ public String getPlaka() {
         this.plaka = plaka;
     }
 
-        public LocalDateTime getGirisZamani() {
-            return girisZamani;
-        }
-//Java'da boolean (evet/hayır) değer döndüren getter metotları get ile değil, genellikle is (öyle mi?) ile başlar.
-        public boolean isParktaMi() {
-            return parktaMi;
-        }
-//olurda bulunma durumunu manuel kontrol etmemiz gerekirse diye set ile ayarlama olasiligini ekledik
-        public void setParktaMi(boolean parktaMi) {
-            this.parktaMi = parktaMi;
-        }
+    public LocalDateTime getGirisZamani() {
+        return girisZamani;
     }
+
+    //Java'da boolean (evet/hayır) değer döndüren getter metotları get ile değil, genellikle is (öyle mi?) ile başlar.
+    public boolean isParktaMi() {
+        return parktaMi;
+    }
+
+    //olurda bulunma durumunu manuel kontrol etmemiz gerekirse diye set ile ayarlama olasiligini ekledik
+    public void setParktaMi(boolean parktaMi) {
+        this.parktaMi = parktaMi;
+    }
+
+    //Her arac kendi ucretini hesaplayacak.(Polimorfizm)
+    //override edilmek zorunda->override edilip o nesneye gore metodun ici doldurulmalı.
+    public abstract double odenecekTutar(double sureDakika);
+
+
+}
