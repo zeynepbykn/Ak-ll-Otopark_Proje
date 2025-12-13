@@ -1,0 +1,42 @@
+*   [33m11f597a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m Merge remote-tracking branch 'origin/master'
+[31m|[m[32m\[m  
+[31m|[m *   [33md69374e[m Merge branch 'master' of https://github.com/zeynepbykn/Ak-ll-Otopark_Proje
+[31m|[m [33m|[m[34m\[m  
+[31m|[m * [34m|[m [33med7dc65[m 12 Aralik: Cikis islemi Polimorfizm yapisina gecirildi. Ucret hesaplama araclarn kendi sinifina tasindi.
+* [34m|[m [34m|[m [33m1db2d86[m Merge remote-tracking branch 'origin/master'
+[34m|[m [34m|[m[34m/[m  
+[34m|[m[34m/[m[34m|[m   
+* [34m|[m [33mb4c6dd0[m Merge remote-tracking branch 'origin/master'
+[34m|[m[34m/[m  
+*   [33m31f64ba[m Merge remote-tracking branch 'origin/master'
+[35m|[m[36m\[m  
+[35m|[m *   [33m3e73bcd[m Merge remote-tracking branch 'origin/master'
+[35m|[m [1;31m|[m[1;32m\[m  
+* [1;31m|[m [1;32m\[m   [33md09932e[m Merge remote-tracking branch 'origin/master'
+[1;31m|[m[1;32m\[m [1;31m\[m [1;32m\[m  
+[1;31m|[m [1;32m|[m[1;31m/[m [1;32m/[m  
+[1;31m|[m[1;31m/[m[1;32m|[m [1;32m/[m   
+[1;31m|[m [1;32m|[m[1;32m/[m    
+[1;31m|[m * [33mf5e800c[m 11 Aralık: 2 Exception sınıfı olusturuldu ve OtoparkService sınıfı duzenlenildi.
+* [1;34m|[m [33m85ce6a8[m Saatlik Abone Sinifi
+[1;34m|[m[1;34m/[m  
+*   [33mc012565[m Merge remote-tracking branch 'origin/master'
+[1;35m|[m[1;36m\[m  
+[1;35m|[m * [33m9f99ce1[m 10 Aralik: Raporlayici (Util) sinifi tamamlandi. Harita cizimi, tarih formatlama ve hizalama duzeltildi.
+* [1;36m|[m [33m4dadaa6[m Park Yeri Sinifi
+[1;36m|[m[1;36m/[m  
+* [33m7cf6a9e[m Abone Sinif
+* [33m86c45d1[m Arac Sinif
+* [33m89fe079[m Arac Sinif
+* [33m6dd51f9[m 9 Aralık-OtoparkService sınıfı oluşturuldu-> Giris cikis ve ucret yazıldı.Park yeri modeli guncellendi butunluk icin.
+*   [33md152d5d[m Merge remote-tracking branch 'origin/master'
+[31m|[m[32m\[m  
+[31m|[m * [33md5811f5[m Tum Siniflar ve Packagelar
+* [32m|[m [33mb76ee51[m 9 Aralık-OtoparkService sınıfı oluşturuldu-> Giris cikis ve ucret yazıldı.Park yeri modeli guncellendi butunluk icin.
+[32m|[m[32m/[m  
+* [33m6165f06[m Exception Siniflari
+* [33mc16b15b[m 8 Aralik ->Ucret hesapla metodu ve mainde test edildi
+* [33m7bc9b08[m Exception Siniflari
+* [33m2e41e29[m İkinci commit
+* [33m086e1aa[m İlk commit
+* [33mb8dfbc6[m İlk commit

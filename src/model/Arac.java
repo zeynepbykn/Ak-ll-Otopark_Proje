@@ -1,5 +1,7 @@
 package model;// Bu sınıfın 'model' (Nesne) kutusunda olduğunu belirtir.
+
 import exception.HataliPlakaException;
+
 import java.time.LocalDateTime;
 
 // Kendi yazdığımız hata sınıfını çağırıyoruz. (Plaka hatalıysa fırlatacağız)
@@ -75,7 +77,8 @@ public abstract class Arac implements GirisCikisTakip {
      */
     public void setPlaka(String plaka) throws HataliPlakaException {        //Plaka Kontrol adimlari
         if (plaka == null) {
-            throw new HataliPlakaException("HATA: Plaka boş olamaz!");        }
+            throw new HataliPlakaException("HATA: Plaka boş olamaz!");
+        }
 
         // Küçük harf girildiyse buyuk  harfe çevirmek ve başta ve sonda(trim) olusmus olabilecek bosluklari temizlemek icin.
         plaka = plaka.trim().toUpperCase();

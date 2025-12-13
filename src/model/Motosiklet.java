@@ -15,8 +15,8 @@ public class Motosiklet extends Arac {
     @Override
     public double odenecekTutar(double sureDakika) {
         //Motosiklet tarifesi: Saati 10 TL
-        double saatlikUcret=10.0;
-        double toplamTutar=(sureDakika/60.0)*saatlikUcret;
+        double saatlikUcret = 10.0;
+        double toplamTutar = (sureDakika / 60.0) * saatlikUcret;
 
         System.out.println("Hesaplama: Motosiklet tarifesi(Saati 10TL) uygulandi.");
         return toplamTutar;

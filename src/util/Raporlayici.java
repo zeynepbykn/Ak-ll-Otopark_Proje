@@ -61,11 +61,10 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
                 //Doluluk Kontrolu
                 if (alan.isDoluMu() && alan.getParkEdenArac() != null) {
                     //Dolu ise o aracn plakasini cekelim.
-                    String plaka=alan.getParkEdenArac().getPlaka();
+                    String plaka = alan.getParkEdenArac().getPlaka();
                     //Plakayi yazdir.%-8s :Plaka icin 8 karakterlik yer ayirir ve sola yaslar.
                     System.out.printf("[%-10s] ", plaka);
-                }
-                else{
+                } else {
                     //Bossa standart bos kutu cizilir.
                     System.out.print("[   BOS    ] ");
                 }
@@ -82,13 +81,13 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
 
     //Tarih-Saat formatlamak icin yardimci metot
     //Gelen LocalDateTime 'i gun/ay/yil saat:dakika formatina cevirir(daha duzgun gozukur.)
-public static String formatla(java.time.LocalDateTime tarih){
-        if(tarih==null) return "Belirsiz";
+    public static String formatla(java.time.LocalDateTime tarih) {
+        if (tarih == null) return "Belirsiz";
 // Java'nın varsayılan tarih formatı (örn: 2025-12-10T15:30:00) okuması zor olduğu için,
-    // burada özel bir 'Şablon' (Pattern) oluşturuyoruz.
-    // Hedeflediğimiz Format: "Gün/Ay/Yıl Saat:Dakika" (Örn: 10/12/2025 14:30)
-        java.time.format.DateTimeFormatter formatim=java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        // burada özel bir 'Şablon' (Pattern) oluşturuyoruz.
+        // Hedeflediğimiz Format: "Gün/Ay/Yıl Saat:Dakika" (Örn: 10/12/2025 14:30)
+        java.time.format.DateTimeFormatter formatim = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return tarih.format(formatim);
-}
+    }
 
 }

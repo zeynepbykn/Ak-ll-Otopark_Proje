@@ -8,9 +8,9 @@ public abstract class Abone implements UcretHesaplayici {
     private String aboneId;
     private String adSoyad;
 
-/*Constructor. Direkt this. deyip atamak yerine yine hata kontrolu saglıyoruz
-bi problem varsa hataKutusunda hata tutuluyor.
- */
+    /*Constructor. Direkt this. deyip atamak yerine yine hata kontrolu saglıyoruz
+    bi problem varsa hataKutusunda hata tutuluyor.
+     */
     public Abone(String aboneId, String adSoyad) {
         try {
             setAboneId(aboneId);
@@ -21,6 +21,7 @@ bi problem varsa hataKutusunda hata tutuluyor.
 
         this.adSoyad = adSoyad;
     }
+
     // Abstract Metot(Polimorfizm): Farklı indirim mantığı için
     /*Polimorfizm=alt siniflarda tanimli metotu ata sinifta tek bir komutla her nesne
     icin kendine has sekilde calismasini saglayan komut.
@@ -49,6 +50,7 @@ bi problem varsa hataKutusunda hata tutuluyor.
         //Her sey yolundaysa atama islemi.
         this.aboneId = aboneId;
     }
+
     /*isim ve soyisim de herhangi bi dogrulma bir sart bulundurmadim cünkü
     aslında bi veri saklama ya da kontrolu ıcın degılde sadece ıd tek basina
     kalmasin  cikti isimde icersin ve daha guzel gorunsun diye isim almak istedik.
@@ -56,6 +58,7 @@ bi problem varsa hataKutusunda hata tutuluyor.
     public String getAdSoyad() {
         return adSoyad;
     }
+
     public void setAdSoyad(String adSoyad) {
         this.adSoyad = adSoyad;
     }
