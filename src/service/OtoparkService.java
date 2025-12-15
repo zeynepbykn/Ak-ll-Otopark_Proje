@@ -1,5 +1,11 @@
 package service;
 
+import model.AylikAbone;
+import model.SaatlikAbone;
+
+import util.DosyaGirisCikisKayit;
+import util.DosyaAboneKayit;
+import model.Abone;
 
 import exception.OtoparkDoluException;
 import model.Arac;
@@ -24,12 +30,14 @@ public class OtoparkService {
     //daha sonra bu satır ve sutun isimize yarayacak o yuzden constructor blokunun disina bu degiskenleri tanimladik.
     private final int MAX_SATIR;
     private final int MAX_SUTUN;
+    private Map<String, Abone> aboneler = DosyaAboneKayit.aboneListesiniGetir();
 
     // Bu sinif ilk "new"lendiginde (Main icinde) burasi çalisir
     public OtoparkService(int satir, int sutun) {
 
         this.MAX_SATIR = satir;
         this.MAX_SUTUN = sutun;
+
 
         this.parktakiAraclar = new HashMap<>();//liste suan bos
 // ParkYeri türünde iki boyutlu bir matris için bellek ayırıyoruz
@@ -89,6 +97,9 @@ public class OtoparkService {
        */
         parktakiAraclar.put(arac.getPlaka(), parkMatrisi[sira][sutun]);// o parkMatrisi[i][j]->oradaki nesneyi cagiririz
 
+        // EKLENECEK: Dosyaya giriş kaydı
+        DosyaGirisCikisKayit.girisKaydet(arac.getPlaka());
+
         //Basarı Mesaji
         System.out.println("Arac basariyla " + sira + ". Kat, " + sutun + ". Sıraya park edildi.");
         System.out.println("KAYT: Plaka (" + arac.getPlaka() + ") Map listesine kaydedildi.");
@@ -110,9 +121,15 @@ public class OtoparkService {
             throw new IllegalStateException("Park yeri dolu görünüyor ama araç yok!");
         }
 
-        LocalDateTime cikisZamani = LocalDateTime.now();//suan cikiyor.
+        LocalDateTime girisZamani = DosyaGirisCikisKayit.girisZamaniGetirVeSil(plaka);
+        if (girisZamani == null) {
+            throw new IllegalStateException("Giriş kaydı bulunamadı!");
+        }
+        LocalDateTime cikisZamani = LocalDateTime.now();
+
         //util sinifindan  dakikaHesapla ile aracin toplam durdugu dk'yi alıyoruz.
-        double sureDakika = UcretHesapla.parkSuresiDakikaHesapla(arac.getGirisZamani(), cikisZamani);
+        double sureDakika = UcretHesapla.parkSuresiDakikaHesapla(girisZamani, cikisZamani);
+
 
         //double ucret=UcretHesapla.standartUcretHesapla(sureDakika);
         double ucret = arac.odenecekTutar(sureDakika);
@@ -123,6 +140,15 @@ public class OtoparkService {
 
     }
 
+    public void yeniAboneEkle(String id, String adSoyad, String tip) {
+        // Dosyaya yaz
+        DosyaAboneKayit.aboneEkle(id, adSoyad, tip);
+
+        // Runtime Map güncellemesi
+        aboneler.put(id, tip.equalsIgnoreCase("Aylik")
+                ? new AylikAbone(id, adSoyad)
+                : new SaatlikAbone(id, adSoyad));
+    }
     //Raporlama ve Gorsellestirme
     //Otoparkin guncel durumunu dis siniflara göstermek icin kullanilir.
     // !parkMatrisi private oldugundan getter metodu ile otoparkın anlık doluluk gorselini gorebiliriz.

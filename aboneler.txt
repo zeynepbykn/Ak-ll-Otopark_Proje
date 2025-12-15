@@ -1,0 +1,2 @@
+A001;Ahmet Yılmaz;Aylik
+S001;Mehmet Kara;Saatlik
