@@ -1,8 +1,5 @@
 package model;
 
-import interfaces.UcretHesaplayici;
-import exception.AboneKaydiBulunamadiException;
-
 public abstract class Abone  {
     //Encapsulation
     private String aboneId;

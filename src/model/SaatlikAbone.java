@@ -1,7 +1,5 @@
 package model;
 
-import interfaces.UcretHesaplayici;
-
 public class SaatlikAbone extends Abone {
 
     /*private olan eriim belirleyicisini kullandik cunku

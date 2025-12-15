@@ -1,7 +1,5 @@
 package model;
 
-import interfaces.UcretHesaplayici;
-
 public class AylikAbone extends Abone {
 
    /* Aylık abone, otoparkın parasını ay başında toplu olarak (Peşin) ödemiştir.
@@ -39,11 +37,7 @@ public class AylikAbone extends Abone {
     // Proje Planındaki Talimat: "return 0 yaz."
     // Mantık: Aylık abone ücretini ay başında peşin öder.
     // Otoparktan çıkarken bariyerde "0 TL" yazar, cebinden para çıkmaz.
-    @Override
-    public double ucretHesapla(double sure, double saatlikUcret) {
-        // Aylık aboneler çıkışta bariyerde para ödemez.
-        return 0.0;
-    }
+
 
     // Raporlama için toString kullanıyoruz
     @Override

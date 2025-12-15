@@ -62,8 +62,9 @@ public class OtoparkService {
 
         // Sinir kontrolu
         if (sira < 0 || sira >= MAX_SATIR || sutun < 0 || sutun >= MAX_SUTUN) {
-            throw new OtoparkDoluException("Hata Gecersiz yer secimi !! Otopark sinirlari disinda.");
+            throw new IllegalArgumentException("Geçersiz park yeri seçimi!");
         }
+
         ParkYeri hedefYer = parkMatrisi[sira][sutun];
         // Hedeflenen kutuyu (nesneyi) seçiyoruz ve "Dolu musun?" diye soruyoruz.
         if (hedefYer.isDoluMu()) {
@@ -105,6 +106,10 @@ public class OtoparkService {
 
         //bilgileri al
         Arac arac = yer.getParkEdenArac();
+        if (arac == null) {
+            throw new IllegalStateException("Park yeri dolu görünüyor ama araç yok!");
+        }
+
         LocalDateTime cikisZamani = LocalDateTime.now();//suan cikiyor.
         //util sinifindan  dakikaHesapla ile aracin toplam durdugu dk'yi alıyoruz.
         double sureDakika = UcretHesapla.parkSuresiDakikaHesapla(arac.getGirisZamani(), cikisZamani);
