@@ -72,6 +72,11 @@ public class ParkYeri {
 
     //Aracı iceri almak icin metot
     public void parkEt(Arac arac) {
+        if (doluMu) {
+            System.err.println("HATA: Park yeri zaten dolu! [" + sira + "," + sutun + "]");
+            return;
+        }
+
         this.parkEdenArac = arac;
         this.doluMu = true;
         //Disaridan bakabilmek adina yazdiriyoruz ki bi nevi tablo olusturabilelim.
@@ -80,6 +85,10 @@ public class ParkYeri {
 
     //Araci disari cikarmak icin metot
     public void cikisYap() {
+        if (!doluMu) {
+            System.err.println("HATA: Park yeri zaten boş! [" + sira + "," + sutun + "]");
+            return;
+        }
         this.parkEdenArac = null;
         this.doluMu = false;
         System.out.println("Park Yeri [" + sira + "," + sutun + "] boşaldı.");

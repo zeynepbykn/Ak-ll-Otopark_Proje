@@ -23,6 +23,10 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
     //Dolu yerlere PLAKA, bos yerlere BOS yazar.
     public static void matrisiKonsolaYazdir(ParkYeri[][] parkMatrisi) {
         //ParkYeri turunde parkmatrisini parametre olarak aliyoruz.
+        if (parkMatrisi.length == 0 || parkMatrisi[0].length == 0) {
+            System.out.println("HATA! Otopark matrisi boş.");
+            return;
+        }
 
         if (parkMatrisi == null) {
             System.out.println("HATA! Otopark verisi okunamadi.");

@@ -1,66 +1,62 @@
 import model.Arac;
+import model.Motosiklet;
 import model.Otomobil;
-import model.ParkYeri;
-import model.AylikAbone;
+import service.OtoparkService;
+
 
 public class OtoparkUygulama {
 
     public static void main(String[] args) {
+        System.out.println("=== OTOPARK SİMÜLASYONU BAŞLIYOR ===");
 
-        System.out.println("==========================================");
-        System.out.println("🚧 ÖĞRENCİ 1 (MODEL) - SİSTEM KONTROL TESTİ 🚧");
-        System.out.println("==========================================\n");
+        // 1. Otoparkı İnşa Et (3 Katlı, Her katta 5 yer)
+        System.out.println("-> Otopark servisi başlatılıyor...");
+        OtoparkService service = new OtoparkService(3, 5);
 
-        // ---------------------------------------------------------
-        // TEST 1: PLAKA KONTROLÜ (GÖREV: Hatalı girişin yakalanması)
-        // ---------------------------------------------------------
-        System.out.println(">>> TEST 1: Kısa Plaka Girişi ('abc') deneniyor...");
+        // 2. Araçları Oluştur (Polimorfizm burada!)
+        System.out.println("-> Araçlar kapıya geldi...");
+        Arac arac1 = new Otomobil("34 IST 001"); // Otomobil
+        Arac arac2 = new Otomobil("06 ANK 999"); // Diğer Otomobil
+        Arac arac3 = new Motosiklet("35 IZM 35");
 
-        // 1. Hatalı bir otomobil oluşturmaya çalışıyoruz.
-        // Arac sınıfının constructor'ı hatayı yakalayıp plakayı "HATALI-PLAKA" yapmalı.
-        Arac hataliArac = new Otomobil("abc");
+        try {
+            // 3. Araçları İçeri Al
+            System.out.println("\n--- GİRİŞ İŞLEMLERİ ---");
 
-        // 2. Kontrol ediyoruz: Sistem hatayı fark edip etiketi yapıştırdı mı?
-        if (hataliArac.getPlaka().equals("HATALI-PLAKA")) {
-            System.out.println("✅ BAŞARILI! Sistem tehdidi algıladı ve plakayı 'HATALI-PLAKA' yaptı.");
-        } else {
-            System.out.println("❌ BAŞARISIZ! Sistem hatalı plakayı ('" + hataliArac.getPlaka() + "') kabul etti.");
+            // 1. Aracı 0. Kat 0. Sıraya koy
+            service.aracGiris(arac1, 0, 0);
+
+            // 2. Aracı 0. Kat 1. Sıraya koy
+            service.aracGiris(arac2, 0, 1);
+
+            // HATA TESTİ: Aynı yere tekrar araç koymaya çalışalım (Bakalım hata verecek mi?)
+            System.out.println("\n(Test) Dolu yere araç park etmeye çalışılıyor...");
+            service.aracGiris(new Otomobil("99 TEST 99"), 0, 0); // Burası hata vermeli!
+
         }
-        System.out.println("--------------------------------------------------\n");
+    catch (Exception e) {
+        System.out.println("BEKLENEN HATA YAKALANDI: " + e.getMessage());
+    }
+        // --- ÇIKIŞ TESTLERİ ---
+        try {
+            System.out.println("\n--- ÇIKIŞ İŞLEMLERİ ---");
 
-        // ---------------------------------------------------------
-        // TEST 2: PARK YERİ KONTROLÜ (GÖREV: -1 Damgası)
-        // ---------------------------------------------------------
-        System.out.println(">>> TEST 2: Negatif Kat Girişi (-5. Kat) deneniyor...");
+            // 34 IST 001 plakalı aracı çıkar
+            double ucret = service.aracCikis("34 IST 001");
+            System.out.println("Tahsil Edilen Ücret: " + ucret + " TL");
 
-        // ParkYeri constructor'ı negatif sayı görünce yer numarasını -1 yapmalı.
-        ParkYeri hataliYer = new ParkYeri(101, -5, 2);
+            // OLMAYAN PLAKA TESTİ
+            System.out.println("\n(Test) Olmayan plakayı çıkarmaya çalışıyoruz...");
+            service.aracCikis("00 YOK 00"); // Burası hata fırlatmalı!
 
-        if (hataliYer.getYerNumarasi() == -1) {
-            System.out.println("✅ BAŞARILI! Park yeri 'Hatalı' (-1) olarak etiketlendi.");
-        } else {
-            System.out.println("❌ BAŞARISIZ! Park yeri hatalı veriye rağmen oluşturuldu.");
+        } catch (Exception e) {
+            System.out.println(">>> BEKLENEN HATA YAKALANDI: " + e.getMessage());
         }
-        System.out.println("--------------------------------------------------\n");
-
-        // ---------------------------------------------------------
-        // TEST 3: AYLIK ABONE HESABI (GÖREV: 0 TL Çıkmalı)
-        // ---------------------------------------------------------
-        System.out.println(">>> TEST 3: Aylık Abone Ücret Hesabı...");
-
-        AylikAbone vipMusteri = new AylikAbone("999", "Test Kullanıcısı");
-
-        // 5 saat kalsa, saati 100 TL olsa bile Aylık Abone olduğu için 0 dönmeli.
-        double ucret = vipMusteri.ucretHesapla(5, 100);
-
-        if (ucret == 0.0) {
-            System.out.println("✅ BAŞARILI! Aylık abone ücreti 0.0 TL olarak hesaplandı.");
-        } else {
-            System.out.println("❌ BAŞARISIZ! Aylık aboneden para istendi: " + ucret);
-        }
-
-        System.out.println("\n==========================================");
-        System.out.println("🏁 TESTLER TAMAMLANDI - MODEL KATMANI HAZIR");
-        System.out.println("==========================================");
+         /* PAZARTESİ YAPILACAKLAR (KULLANICI ARAYÜZÜ):
+           1. Scanner kütüphanesi eklenecek.
+           2. while(true) sonsuz döngüsü kurulacak.
+           3. Ekrana menü seçenekleri (1-Giriş, 2-Çıkış, 3-Durum) yazdırılacak.
+           4. Switch-Case yapısı ile kullanıcının seçimi yönetilecek.
+        */
     }
 }

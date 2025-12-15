@@ -45,14 +45,6 @@ public class SaatlikAbone extends Abone {
     verecegi metotu ezdik ana metot olan ucretHesapladan.
      */
 
-    @Override
-    public double ucretHesapla(double sure, double saatlikUcret) {
-        double normalTutar = sure * saatlikUcret;
-
-        double indirimTutari = normalTutar * anlikIndirimOrani;
-
-        return normalTutar - indirimTutari; // Sonuç: 50 - İndirim
-    }
 
     @Override
     public String toString() {

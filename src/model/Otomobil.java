@@ -18,8 +18,12 @@ public class Otomobil extends Arac {
 //Ornek tarife : Saati 20TL;
         double saatlikUcret = 20.0;
 
-        double toplamTutar = (sureDakika / 60.0) * saatlikUcret;
-        System.out.println("Hesaplama: Otomobil tairfesi(saati 20 TL) uygulandi.");
-        return toplamTutar;
+        double normalTutar = (sureDakika / 60.0) * saatlikUcret;
+
+        double indirim = normalTutar * indirimOrani();
+
+        System.out.println("Hesaplama: Otomobil tarifesi (Saati 20 TL) uygulandı.");
+        return normalTutar - indirim;
+
     }
 }
