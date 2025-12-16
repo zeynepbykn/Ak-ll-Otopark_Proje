@@ -1,5 +1,8 @@
 package model;
-
+/*
+ * Abone sınıfı, otopark abonelerini temsil eden soyut bir sınıftır.
+ * Alt sınıflar, kendi indirim mantığını override ederek belirleyecektir.
+ */
 public abstract class Abone  {
     //Encapsulation
     private String aboneId;

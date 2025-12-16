@@ -20,6 +20,10 @@ public class OtoparkService {
 
     // < key-plaka, value-Parkyeri nesnesi >
     private Map<String, ParkYeri> parktakiAraclar; //kayit defteri
+    // OtoparkService içinde
+    public Map<String, Abone> getAboneler() {
+        return aboneler;
+    }
 
     /*
     "parkMatrisi, otoparkın fiziksel kat ve sütun düzenini temsil eden ve her hücresinde ParkYeri sınıfından oluşturulmuş bir nesne barındıran iki boyutlu bir dizidir.

@@ -1,2 +1,4 @@
 A001;Ahmet Yılmaz;Aylik
 S001;Mehmet Kara;Saatlik
+A001;Ali Veli;Aylik
+S001;Ayşe Yılmaz;Saatlik
