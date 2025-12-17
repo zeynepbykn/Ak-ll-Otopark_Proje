@@ -15,6 +15,10 @@ public class ParkYeri {
     private Arac parkEdenArac;
 
     // Contructor=kurucu metot yani nesne olusturuldugu an calısan ilk yer.
+    //overload
+    public ParkYeri(int yerNumarasi) {
+        this(yerNumarasi, 0, 0);
+    }
 
     public ParkYeri(int yerNumarasi, int sira, int sutun) {
         //this.:private degisken olan yer numarasidir kalicidir.

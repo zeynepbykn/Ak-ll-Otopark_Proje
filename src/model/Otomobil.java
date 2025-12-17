@@ -16,7 +16,7 @@ public class Otomobil extends Arac {
     @Override
     public double odenecekTutar(double sureDakika) {
 //Ornek tarife : Saati 20TL;
-        double saatlikUcret = 20.0;
+        Double saatlikUcret = 20.0;
 
         double normalTutar = (sureDakika / 60.0) * saatlikUcret;
 

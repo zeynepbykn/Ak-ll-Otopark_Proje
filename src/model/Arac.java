@@ -1,6 +1,7 @@
 package model;// Bu sınıfın 'model' (Nesne) kutusunda olduğunu belirtir.
 
 import exception.HataliPlakaException;
+import interfaces.Fiyatlanabilir;
 import model.Abone;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ Fakat (public oldugu icin) herhangi bir sinif miras alabilir
  */
 
 // GirisCikisTakip sinifi otopark sistemine "Ben giris ve cikis yapabilirim" taahhudu verir.
-public abstract class Arac implements GirisCikisTakip {
+public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
     protected Abone abone; // varsa abone
 
     public void setAbone(Abone abone) {
@@ -32,7 +33,7 @@ public abstract class Arac implements GirisCikisTakip {
 
     private String plaka;
     private LocalDateTime girisZamani;
-    private boolean parktaMi;//(true/false) olarak
+    private Boolean parktaMi;//(true/false) olarak
 
     /* Constructor nesne hafizada olusurken calisir
      */

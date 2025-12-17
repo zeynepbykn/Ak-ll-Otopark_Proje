@@ -14,6 +14,21 @@ public class OtoparkUygulama {
 
         //1. Otoparki hazirliyoruz.(3 kat,5 sıra)
         System.out.println("Sistem baslatiliyor...");
+
+        // === GUN BILGISI (DIZI + DATE + STRING) ===
+        String[] gunler = {"Pzt", "Sal", "Car", "Per", "Cum", "Cmt", "Paz"};
+
+        int gunIndex = java.time.LocalDate.now().getDayOfWeek().getValue() - 1;
+        String bugun = gunler[gunIndex];
+
+        String bugunBuyuk = bugun.toUpperCase();
+        boolean haftaSonuMu =
+                bugun.equalsIgnoreCase("Cmt") ||
+                        bugun.equalsIgnoreCase("Paz");
+
+        System.out.println("Bugun gunlerden: " + bugunBuyuk);
+
+
         OtoparkService service = new OtoparkService(3, 5);
 
         boolean devamMi = true; //Dongu anahtari
@@ -25,6 +40,9 @@ public class OtoparkUygulama {
             System.out.println("2- Arac Cikisi");
             System.out.println("3- Durum Goster (map)");
             System.out.println("4- Yeni Abone Ekle");
+            System.out.println("5- Aboneleri Listele");
+            System.out.println("6- Parktaki Arac Sayisi");
+            System.out.println("7- Test Modu (bos)");
             System.out.println("0- Cikis");
             System.out.println("Seciminiz: ");
 
@@ -51,6 +69,18 @@ public class OtoparkUygulama {
                 case 4:
                     aboneEkleEkrani(service);
                     break;
+                case 5:
+                    service.getAboneler().forEach((k, v) -> System.out.println(k + " -> " + v));
+                    break;
+
+                case 6:
+                    System.out.println("Parktaki arac sayisi: " + service.getParkMatrisi().length);
+                    break;
+
+                case 7:
+                    System.out.println("Test modu aktif (placeholder)");
+                    break;
+
                 case 0:
                     System.out.println("Sistem kapatiliyor.Iyi gunler!");
                     devamMi = false;
@@ -72,7 +102,9 @@ public class OtoparkUygulama {
 
         System.out.println("Tip (1-Otomobil ,2-Motosiklet): ");
         int tip = tarayici.nextInt();
-        tarayici.nextLine();// int sayi okunurken sondaki \n okunmaz ve bufferda kalir sonraki okumada sıkıntı cıkmasın diye onu temizliyoruz.
+        tarayici.nextLine();
+
+        // int sayi okunurken sondaki \n okunmaz ve bufferda kalir sonraki okumada sıkıntı cıkmasın diye onu temizliyoruz.
         //nextLine() -->  \n dahil olmak uzere herseyi tuketir.
 
         Arac arac = null;
@@ -122,6 +154,13 @@ public class OtoparkUygulama {
             //Service hesaplamayi yapip bize bir ucret donduruyor.
             double ucret = service.aracCikis(plaka);
 
+            String aciklama = (ucret == 0)
+                    ? "Aboneden ucret alinmadi."
+                    : "Standart ucret uygulandi.";
+
+            System.out.println(aciklama);
+
+
             System.out.println("------------------------------------");
             System.out.println(">>>> ODENECEK TUTAR: " + ucret + " TL <<<<");
             System.out.println("------------------------------------");
@@ -129,6 +168,8 @@ public class OtoparkUygulama {
         } catch (Exception e) {
             //Eger plaka icerde yoksa veya baska hata olusursa burasi calisir.
             System.out.println("HATA: Cıkıs yapilamadi!(" + e.getMessage() + ")");
+        }finally {
+            System.out.println("Cikis islemi tamamlandi.");
         }
 
     }
