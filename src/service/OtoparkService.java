@@ -49,7 +49,9 @@ public class OtoparkService {
         this.parkMatrisi = new ParkYeri[satir][sutun];
 
         //yer numarasi bir etiket(mesela 15 numarali parkyeri)
-        int yerNo = 1;//oda numarası 1 den baslatiyoruz.(matrisler[0][0] dir)
+        double baslangicDegeri = 1.0;
+        int yerNo = (int) baslangicDegeri; // EXPLICIT TYPE CONVERSION
+//oda numarası 1 den baslatiyoruz.(matrisler[0][0] dir)
         //dis dongu->katlari geziyor.
 
 // İki boyutlu otopark matrisini ParkYeri nesneleriyle dolduruyoruz
