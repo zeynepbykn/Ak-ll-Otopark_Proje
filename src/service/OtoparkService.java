@@ -20,6 +20,7 @@ public class OtoparkService {
 
     // < key-plaka, value-Parkyeri nesnesi >
     private Map<String, ParkYeri> parktakiAraclar; //kayit defteri
+
     // OtoparkService içinde
     public Map<String, Abone> getAboneler() {
         return aboneler;
