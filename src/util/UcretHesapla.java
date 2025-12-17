@@ -39,6 +39,8 @@ public final class UcretHesapla {
 
         //Duration->Javanın kronometre sinifidir.Iki zaman arasindaki zamansal farki hesaplamak icin kullandik.
         double dakikaFarki = Duration.between(giris, cikis).toMinutes();
+        //Duration.toMinutes()long döndürür dakikaFarki double Java otomatik olarak long → double çevirir
+        // implicit (örtük) type conversion
         if (dakikaFarki < 0) {
             throw new IllegalArgumentException(
                     "Çıkış zamanı giriş zamanından önce olamaz!"
