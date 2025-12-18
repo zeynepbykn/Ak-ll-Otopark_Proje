@@ -2,7 +2,7 @@ package service;
 
 import model.AylikAbone;
 import model.SaatlikAbone;
-
+import java.time.format.DateTimeFormatter;
 import util.DosyaGirisCikisKayit;
 import util.DosyaAboneKayit;
 import model.Abone;
@@ -186,6 +186,17 @@ public class OtoparkService {
 
         //double ucret=UcretHesapla.standartUcretHesapla(sureDakika);
         double ucret = arac.odenecekTutar(sureDakika);
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        System.out.println("\n=================================");
+        System.out.println("       OTOPARK ÇIKIŞ FİŞİ       ");
+        System.out.println("=================================");
+        System.out.println("Araç Plakası : " + plaka);
+        System.out.println("Giriş Zamanı : " + girisZamani.format(format));
+        System.out.println("Çıkış Zamanı : " + cikisZamani.format(format));
+        System.out.println("Toplam Süre  : " + (int)sureDakika + " dakika");
+        System.out.println("=================================\n");
+        // ----------------------------------------------
 
         yer.cikisYap();//ParkYeri nesnesini bosalt.
         parktakiAraclar.remove(plaka);//Defterden (MAP) kaydi siliniyor.
