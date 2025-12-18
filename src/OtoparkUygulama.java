@@ -32,52 +32,72 @@ public class OtoparkUygulama {
         OtoparkService service = new OtoparkService(3, 5);
 
         boolean devamMi = true; //Dongu anahtari
-        int secim = -1;
+        char secim = ' ';
+
         //2. Oyun dongusu basliyor.
         while (devamMi) {
             System.out.println("\n---------AKILLI OTOPARK MENUSU---------");
-            System.out.println("1- Arac Girisi");
-            System.out.println("2- Arac Cikisi");
-            System.out.println("3- Durum Goster (map)");
-            System.out.println("4- Yeni Abone Ekle");
-            System.out.println("5- Aboneleri Listele");
-            System.out.println("6- Parktaki Arac Sayisi");
-            System.out.println("0- Cikis");
+            System.out.println("a- Arac Girisi");
+            System.out.println("b- Arac Cikisi");
+            System.out.println("c- Durum Goster (map)");
+            System.out.println("d- Yeni Abone Ekle");
+            System.out.println("e- Aboneleri Listele");
+            System.out.println("f- Parktaki Arac Sayisi");
+            System.out.println("g- Test Modu (bos)");
+            System.out.println("q- Cikis");
             System.out.println("Seciminiz: ");
 
             //Kullanicidan sayi aliniyor.
 
             try {
-                secim = tarayici.nextInt();
-                tarayici.nextLine();//Enter tusunu temizler!!
+                String girdi = tarayici.next().toLowerCase();
+                secim=girdi.charAt(0);
+                tarayici.nextLine();
             } catch (Exception e) {
                 System.out.println("Hata: Lutfen sadece sayi giriniz!");
                 tarayici.nextLine();//hatali girdiyi temizler.
                 continue; //Dongumuzun basina doner.
             } //3. Secime Gore Yonlendirme
             switch (secim) {
-                case 1:
+                case 'a':
                     aracGirisEkrani(service);
                     break;
-                case 2:
+                case 'b':
                     aracCikisEkrani(service);
                     break;
-                case 3:
+                case 'c':
                     Raporlayici.matrisiKonsolaYazdir(service.getParkMatrisi());
                     break;
-                case 4:
+                case 'd':
                     aboneEkleEkrani(service);
                     break;
-                case 5:
+                case 'e':
                     service.getAboneler().forEach((k, v) -> System.out.println(k + " -> " + v));
                     break;
 
-                case 6:
-                    System.out.println("Parktaki arac sayisi: " + service.getParkMatrisi().length);
+                case 'f':
+                    // 1. Service'ten matrisi (binanın planını) istiyoruz
+                    ParkYeri[][] matris = service.getParkMatrisi();
+                    int sayac = 0;
+
+                    // 2. Tüm katları ve sıraları tek tek geziyoruz
+                    for (int i = 0; i < matris.length; i++) {
+                        for (int j = 0; j < matris[i].length; j++) {
+                            // 3. Eğer o kutu (park yeri) doluysa sayacı artır
+                            if (matris[i][j].isDoluMu()) {
+                                sayac++;
+                            }
+                        }
+                    }
+
+                    System.out.println("Parktaki anlik arac sayisi: " + sayac);
                     break;
 
+                case 'g':
+                    System.out.println("Test modu aktif (placeholder)");
+                    break;
 
-                case 0:
+                case 'q':
                     System.out.println("Sistem kapatiliyor.Iyi gunler!");
                     devamMi = false;
                     break;
@@ -95,6 +115,7 @@ public class OtoparkUygulama {
         System.out.println("\n---Arac girisi: ");
         System.out.print("Plaka: ");
         String plaka = tarayici.nextLine();
+        System.out.println("\n");
 
         System.out.println("Tip (1-Otomobil ,2-Motosiklet): ");
         int tip = tarayici.nextInt();
