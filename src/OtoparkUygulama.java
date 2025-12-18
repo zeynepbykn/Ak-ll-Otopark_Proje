@@ -43,7 +43,6 @@ public class OtoparkUygulama {
             System.out.println("d- Yeni Abone Ekle");
             System.out.println("e- Aboneleri Listele");
             System.out.println("f- Parktaki Arac Sayisi");
-            System.out.println("g- Test Modu (bos)");
             System.out.println("q- Cikis");
             System.out.println("Seciminiz: ");
 
@@ -93,10 +92,6 @@ public class OtoparkUygulama {
                     System.out.println("Parktaki anlik arac sayisi: " + sayac);
                     break;
 
-                case 'g':
-                    System.out.println("Test modu aktif (placeholder)");
-                    break;
-
                 case 'q':
                     System.out.println("Sistem kapatiliyor.Iyi gunler!");
                     devamMi = false;
@@ -111,21 +106,34 @@ public class OtoparkUygulama {
 
     //Kullanicidan gerekli tum bilgileri(Plaka,tip ,yer..) burada toplar,ve srvice e gonderir.
 //bu metot topladıgı bilgileri service'e isler.
-    private static void aracGirisEkrani(OtoparkService service) {
-        System.out.println("\n---Arac girisi: ");
-        System.out.print("Plaka: ");
-        String plaka = tarayici.nextLine();
-        System.out.println("\n");
 
-        System.out.println("Tip (1-Otomobil ,2-Motosiklet): ");
-        int tip = tarayici.nextInt();
-        tarayici.nextLine();
 
         // int sayi okunurken sondaki \n okunmaz ve bufferda kalir sonraki okumada sıkıntı cıkmasın diye onu temizliyoruz.
         //nextLine() -->  \n dahil olmak uzere herseyi tuketir.
 
+    private static void aracGirisEkrani(OtoparkService service) {
+        System.out.println("\n---Arac girisi: ");
+        System.out.print("Plaka: ");
+        String plaka = tarayici.nextLine();
+
+        if (plaka.trim().isEmpty()) {
+            System.out.println("Hata: Plaka boş olamaz!");
+            return;
+        }
+
+        System.out.println("Tip (1-Otomobil ,2-Motosiklet): ");
+        int tip = -1;
+        try {
+            tip = tarayici.nextInt();
+            tarayici.nextLine(); // Buffer temizliği
+        } catch (Exception e) {
+            System.out.println("Hata: Sayı girmelisiniz!");
+            tarayici.nextLine();
+            return;
+        }
+
         Arac arac = null;
-        if (tip == 1) {  //Polimorfizm
+        if (tip == 1) {
             arac = new Otomobil(plaka);
         } else if (tip == 2) {
             arac = new Motosiklet(plaka);
@@ -136,29 +144,48 @@ public class OtoparkUygulama {
 
         System.out.println("Abone ID: (Yoksa enter'a basiniz)");
         String aboneId = tarayici.nextLine();
-        //Eger kullanıcı bos birsey girmediyse ve yazdıgı aboneId defterimize kayitli ise
         if (!aboneId.isEmpty() && service.getAboneler().containsKey(aboneId)) {
-            // ADIM A (Sağ Taraf): service.getAboneler().get(aboneId) -> Dosyadan o aboneyi bul ve getir.
-            // ADIM B (Sol Taraf): arac.setAbone(...) -> Bulunan aboneyi otoparka giren araca etiketle (bağla).
             arac.setAbone(service.getAboneler().get(aboneId));
             System.out.println("Abone girisi algilandi.");
         }
 
-        //Konum secimi
-        System.out.println("Hangi Kat (0-2): ");
-        int kat = tarayici.nextInt();
-        System.out.println("Hangi Sira (0-4): ");
-        int sira = tarayici.nextInt();
-        tarayici.nextLine();// temizlik
-        try {//bu aracı o kata ve sıraya park eder.
-            service.aracGiris(arac, kat, sira);
-        }
-        //Park yeri dolu ise yada girilen kat veya sira sunmarasi yanlissa hata fırlatıp yakalıyoruz.
-        catch (Exception e) {
-            System.out.println("HATA: " + e.getMessage());
+        // --- DÖNGÜ BAŞLIYOR ---
+        boolean parkIslemiBasarili = false;
+
+        while (!parkIslemiBasarili) {
+            // Kullanıcıya tekrar tekrar başlık basmak yerine direkt soruyoruz
+            System.out.println("\n--- Park Yeri Seçiniz (Çıkış için Kat: -1) ---");
+
+            System.out.print("Hangi Kat (0-2): ");
+            int kat = -1;
+            int sira = -1;
+
+            try {
+                kat = tarayici.nextInt();
+                if (kat == -1) {
+                    System.out.println("İşlem iptal edildi.");
+                    return;
+                }
+
+                System.out.print("Hangi Sira (0-4): ");
+                sira = tarayici.nextInt();
+                tarayici.nextLine(); // Enter tuşunu temizle
+
+                // Park etmeyi dene
+                service.aracGiris(arac, kat, sira);
+
+                // Hata vermediyse buraya gelir ve döngü biter
+                parkIslemiBasarili = true;
+
+            } catch (Exception e) {
+                // Hata mesajını bas ama BEKLEME YAPMA
+                System.out.println(">> UYARI: " + e.getMessage());
+                System.out.println(">> Lütfen boş bir yer seçiniz:");
+
+                // BURADAKİ nextLine()'ı SİLDİK. ARTIK TAKILMADAN BAŞA DÖNECEK.
+            }
         }
     }
-
     private static void aracCikisEkrani(OtoparkService service) {
         System.out.println("\n--- ARAC CIKIS ---");
 
