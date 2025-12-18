@@ -16,15 +16,15 @@ public class OtoparkUygulama {
         System.out.println("Sistem baslatiliyor...");
 
         // === GUN BILGISI (DIZI + DATE + STRING) ===
-        String[] gunler = {"Pzt", "Sal", "Car", "Per", "Cum", "Cmt", "Paz"};
+        String[] gunler = {"Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"};
 
         int gunIndex = java.time.LocalDate.now().getDayOfWeek().getValue() - 1;
         String bugun = gunler[gunIndex];
 
         String bugunBuyuk = bugun.toUpperCase();
         boolean haftaSonuMu =
-                bugun.equalsIgnoreCase("Cmt") ||
-                        bugun.equalsIgnoreCase("Paz");
+                bugun.equalsIgnoreCase("Cumartesi") ||
+                        bugun.equalsIgnoreCase("Pazar");
 
         System.out.println("Bugun gunlerden: " + bugunBuyuk);
 
