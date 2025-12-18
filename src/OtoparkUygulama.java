@@ -42,7 +42,6 @@ public class OtoparkUygulama {
             System.out.println("4- Yeni Abone Ekle");
             System.out.println("5- Aboneleri Listele");
             System.out.println("6- Parktaki Arac Sayisi");
-            System.out.println("7- Test Modu (bos)");
             System.out.println("0- Cikis");
             System.out.println("Seciminiz: ");
 
@@ -77,9 +76,6 @@ public class OtoparkUygulama {
                     System.out.println("Parktaki arac sayisi: " + service.getParkMatrisi().length);
                     break;
 
-                case 7:
-                    System.out.println("Test modu aktif (placeholder)");
-                    break;
 
                 case 0:
                     System.out.println("Sistem kapatiliyor.Iyi gunler!");

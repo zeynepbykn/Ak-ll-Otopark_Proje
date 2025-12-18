@@ -6,12 +6,12 @@ import model.SaatlikAbone;
 import util.DosyaGirisCikisKayit;
 import util.DosyaAboneKayit;
 import model.Abone;
-
+import model.*;
 import exception.OtoparkDoluException;
 import model.Arac;
 import model.ParkYeri;
 import util.UcretHesapla;
-
+import java.util.List;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,9 +64,55 @@ public class OtoparkService {
                 yerNo++;
             }
         }
+        // 2. KRİTİK NOKTA: Program açılınca eski kayıtları dosyadan geri yüklüyoruz!
+        eskiAraclariYukle();
     }
 
+    // --- BU METOT PROGRAM AÇILINCA ÇALIŞIR ---
+    private void eskiAraclariYukle() {
+        // Dosya sınıfından satırları istiyoruz. Dosya yoksa boş liste gelir, sorun çıkmaz.
+        List<String> kayitlar = DosyaGirisCikisKayit.kayitlariOku();
 
+        if(!kayitlar.isEmpty()) {
+            System.out.println("Sistem: Dosyadan " + kayitlar.size() + " arac geri yukleniyor...");
+        }
+
+        for (String satir : kayitlar) {
+            try {
+                String[] veri = satir.split(";");
+                // Veri sırası: [0]=Plaka, [1]=Tip, [2]=Kat, [3]=Sira, [4]=Zaman
+
+                String plaka = veri[0];
+                String tip = veri[1];
+                int kat = Integer.parseInt(veri[2]);
+                int sira = Integer.parseInt(veri[3]);
+                LocalDateTime zaman = LocalDateTime.parse(veri[4]);
+
+                // 1. Aracı Tipine Göre Canlandır
+                Arac arac = null;
+                if (tip.equals("Otomobil")) {
+                    arac = new Otomobil(plaka);
+                } else if (tip.equals("Motosiklet")) {
+                    arac = new Motosiklet(plaka);
+                } else {
+                    arac = new Otomobil(plaka); // Bilinmeyen tipse varsayılan
+                }
+
+                // 2. Eski zamanı ayarla (Şimdi girmiş gibi olmasın)
+                arac.setGirisZamani(zaman);
+
+                // 3. Matrise ve Map'e yerleştir
+                ParkYeri yer = parkMatrisi[kat][sira];
+                yer.parkEt(arac);
+                parktakiAraclar.put(plaka, yer);
+
+                System.out.println("-> Geri yuklendi: " + plaka + " (" + tip + ")");
+
+            } catch (Exception e) {
+                System.err.println("Eski kayit yuklenirken hata: " + e.getMessage());
+            }
+        }
+    }
     public void aracGiris(Arac arac, int sira, int sutun) throws OtoparkDoluException {
 
         // 1. Güvenlik Kontrolü: Araç boş mu?
@@ -105,7 +151,7 @@ public class OtoparkService {
         parktakiAraclar.put(arac.getPlaka(), parkMatrisi[sira][sutun]);// o parkMatrisi[i][j]->oradaki nesneyi cagiririz
 
         // EKLENECEK: Dosyaya giriş kaydı
-        DosyaGirisCikisKayit.girisKaydet(arac.getPlaka());
+        DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun);
 
         //Basarı Mesaji
         System.out.println("Arac basariyla " + sira + ". Kat, " + sutun + ". Sıraya park edildi.");

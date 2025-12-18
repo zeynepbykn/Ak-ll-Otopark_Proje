@@ -77,6 +77,16 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
 
         return plaka;
     }
+        //1.Dosyadan okudugumuz eski tarihi buraya set edecegiz.
+        public void setGirisZamani(LocalDateTime girisZamani){
+            this.girisZamani=girisZamani;
+            this.parktaMi=true;
+        }
+        //2.Dosyaya yazarken otomobilmi motosikletmi oldugunu anlamak icin
+        public String getTip() {
+            return this.getClass().getSimpleName();
+        }
+
 /* Otopark doluluk ve verimlilik raporu icin alt siniflar bunu doldurmak zorunda.
  Matris (2D Dizi) yapısında teknik olarak her hücre 1 araç tutar Yani aslinda verimlilik acisindan %100 degil fakat
  ArrayList<Arac> ile sadece arclarin girisini kaydetmek yerine matris ile kat konum bilgilerini ozel olarak tutmak istedik*/
@@ -110,6 +120,7 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
     public String getPlaka() {
         return plaka;
     }
+
 
     /*Sadece Türk plakasi olmamasi durumunda standart bi sart kosmak problem
     yaratacagi icin bi kontrol sarti olmali fakat cok fazla sart oldugu ıcın standrt bir dongu
