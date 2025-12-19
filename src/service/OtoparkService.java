@@ -123,6 +123,19 @@ public class OtoparkService {
             }
         }
     }
+//Fail Fast
+    public boolean otoparkDoluMu() {
+        // 1. Toplam kapasiteyi hesapla (Kat Sayısı x Sıra Sayısı)
+        // Senin örneğinde: 3 x 5 = 15
+        int toplamKapasite = parkMatrisi.length * parkMatrisi[0].length;
+
+        // 2. Şu an içeride kaç araç var? (Map'in boyutuna bakıyoruz)
+        int icerdekiAracSayisi = parktakiAraclar.size();
+
+        // 3. Eşitse doludur (true döner), değilse yer vardır (false döner)
+        return icerdekiAracSayisi >= toplamKapasite;
+    }
+
     public void aracGiris(Arac arac, int sira, int sutun) throws OtoparkDoluException {
 
         // 1. Güvenlik Kontrolü: Araç boş mu?

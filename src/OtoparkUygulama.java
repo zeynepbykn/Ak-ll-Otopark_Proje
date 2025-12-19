@@ -89,7 +89,7 @@ public class OtoparkUygulama {
                     break;
 
                 case 'q':
-                    System.out.println("Sistem kapatiliyor.Iyi gunler!");
+                    System.out.println("Sisctem kapatiliyor.Iyi gunler!");
                     devamMi = false;
                     break;
                 default:
@@ -108,6 +108,12 @@ public class OtoparkUygulama {
     //nextLine() -->  \n dahil olmak uzere herseyi tuketir.
 
     private static void aracGirisEkrani(OtoparkService service) {
+      //Otoparkın kapasitesinin dolu olup olmadıgını kontrol etme
+        if (service.otoparkDoluMu()) {
+            System.out.println("\n🛑 HATA: OTOPARK TAMAMEN DOLU! 🛑");
+            System.out.println(">>> Kapasite dolu olduğu için yeni araç girişi yapılamaz.");
+            return; // Metodu burada kesip ana menüye fırlatır.
+        }
         System.out.println("\n---Arac girisi: ");
         System.out.print("Plaka: ");
 
@@ -155,10 +161,13 @@ public class OtoparkUygulama {
         boolean parkIslemiBasarili = false;
 
         while (!parkIslemiBasarili) {
+
+int sonKatIndex=service.getParkMatrisi().length -1;
+int sonSiraIndex=service.getParkMatrisi()[0].length -1;
             // Kullanıcıya tekrar tekrar başlık basmak yerine direkt soruyoruz
             System.out.println("\n--- Park Yeri Seçiniz (Çıkış için Kat: -1) ---");
 
-            System.out.print("Hangi Kat (0-2): ");
+            System.out.print("Hangi Kat (0-" +sonKatIndex+ "): ");
             int kat = -1;
             int sira = -1;
 
@@ -169,7 +178,7 @@ public class OtoparkUygulama {
                     return;
                 }
 
-                System.out.print("Hangi Sira (0-4): ");
+                System.out.print("Hangi Sira (0-" +sonSiraIndex+ "): ");
                 sira = tarayici.nextInt();
                 tarayici.nextLine(); // Enter tuşunu temizle
 
