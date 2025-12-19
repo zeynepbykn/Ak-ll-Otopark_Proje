@@ -35,7 +35,7 @@ public class ParkYeri {
             hata programi patlatamiyo.
              */
 
-            System.err.println("Park Yeri Hatası: Sıra negatif olamaz!" + hataKutusu.getMessage());
+            System.err.println("❌Park Yeri Hatası: Sıra negatif olamaz!" + hataKutusu.getMessage());
             System.err.println(">>> Gönderilen Hatalı Değerler: Sıra=" + sira + ", Sütun=" + sutun);
             // Hata olsa bile program çökmesin diye varsayılan değer (0) atıyoruz
             /*Yani bi yer acilip icinde kullanissiz degerler kalmassin diye o yeri yine olusturmus oluyoruz
@@ -68,7 +68,7 @@ public class ParkYeri {
     public void setSutun(int sutun) throws GecersizMiktarException {
         //Matriste gecerli sutun numarası sart.
         if (sutun < 0) {
-            throw new GecersizMiktarException("HATA: Sütun numarası negatif olamaz! (" + sutun + ")");
+            throw new GecersizMiktarException("❌HATA: Sütun numarası negatif olamaz! (" + sutun + ")");
         }
         this.sutun = sutun;
     }
@@ -77,7 +77,7 @@ public class ParkYeri {
     //Aracı iceri almak icin metot
     public void parkEt(Arac arac) {
         if (doluMu) {
-            System.err.println("HATA: Park yeri zaten dolu! [" + sira + "," + sutun + "]");
+            System.err.println("❌HATA: Park yeri zaten dolu! [" + sira + "," + sutun + "]");
             return;
         }
 
@@ -90,7 +90,7 @@ public class ParkYeri {
     //Araci disari cikarmak icin metot
     public void cikisYap() {
         if (!doluMu) {
-            System.err.println("HATA: Park yeri zaten boş! [" + sira + "," + sutun + "]");
+            System.err.println("❌HATA: Park yeri zaten boş! [" + sira + "," + sutun + "]");
             return;
         }
         this.parkEdenArac = null;

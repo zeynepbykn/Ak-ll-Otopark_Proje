@@ -70,7 +70,7 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
                     System.out.printf("[%-10s] ", plaka);
                 } else {
                     //Bossa standart bos kutu cizilir.
-                    System.out.print("[   BOS    ] ");
+                    System.out.print("[   BOŞ    ] ");
                 }
             }
             //Kat bitti, asagi kata geciliyor.

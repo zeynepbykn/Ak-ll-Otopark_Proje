@@ -29,7 +29,7 @@ public final class UcretHesapla {
     public static double parkSuresiDakikaHesapla(LocalDateTime giris, LocalDateTime cikis) {
         //kontrol bloku
         if (giris == null || cikis == null) {
-            System.out.println("Hata :Giris veya Cikis saati bos!");
+            System.err.println("❌Hata :Giriş veya Çıkış saati boş!");
             return 0;//Gecersiz tarih veya null kontrolu yapar-> Hata durumunda 0 dondurerek islemi sonlandirir.
         }
         //  Duration sure = Duration.between(giris, cikis);

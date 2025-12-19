@@ -27,14 +27,14 @@ public final class DosyaAboneKayit {
                 String adSoyad = parca[1];
                 String tip = parca[2];
 
-                if (tip.equalsIgnoreCase("Aylik")) {
+                if (tip.equalsIgnoreCase("Aylık")) {
                     aboneler.put(id, new AylikAbone(id, adSoyad));
                 } else if (tip.equalsIgnoreCase("Saatlik")) {
                     aboneler.put(id, new SaatlikAbone(id, adSoyad));
                 }
             }
         } catch (IOException e) {
-            System.err.println("Abone dosyası okunamadı!");
+            System.err.println("❌Abone dosyası okunamadı!");
         }
         return aboneler;
     }
@@ -45,7 +45,7 @@ public final class DosyaAboneKayit {
             writer.write(id + ";" + adSoyad + ";" + tip);
             writer.newLine();
         } catch (IOException e) {
-            System.err.println("Dosyaya abone eklenemedi!");
+            System.err.println("❌Dosyaya abone eklenemedi!");
         }
     }
 }

@@ -22,7 +22,7 @@ public class OtoparkUygulama {
         String bugun = gunler[gunIndex];
 
         String bugunBuyuk = bugun.toUpperCase();
-        System.out.println("Bugun gunlerden: " + bugunBuyuk);
+        System.out.println("Bugün günlerden:" + bugunBuyuk);
 
 
         OtoparkService service = new OtoparkService(3, 5);
@@ -32,15 +32,22 @@ public class OtoparkUygulama {
 
         //2. Oyun dongusu basliyor.
         while (devamMi) {
-            System.out.println("\n---------AKILLI OTOPARK MENUSU---------");
-            System.out.println("a- Arac Girisi");
-            System.out.println("b- Arac Cikisi");
-            System.out.println("c- Durum Goster (map)");
-            System.out.println("d- Yeni Abone Ekle");
-            System.out.println("e- Aboneleri Listele");
-            System.out.println("f- Parktaki Arac Sayisi");
-            System.out.println("q- Cikis");
-            System.out.println("Seciminiz: ");
+            System.out.println("\n---------AKILLI OTOPARK MENÜSÜ---------");
+            System.out.println("->Araç Girişi Yapmak İçin -a- tuşlayınız.");
+            System.out.println("-----------------------------------------");
+            System.out.println("->Araç Çıkışı Yapmak İçin -b- tuşlayınız.");
+            System.out.println("-----------------------------------------");
+            System.out.println("->Otopark Durumunu Görmek İçin -c- tuşlayınız.");
+            System.out.println("-----------------------------------------");
+            System.out.println("->Yeni Abone Eklemek İçin -d- tuşlayınız.");
+            System.out.println("-----------------------------------------");
+            System.out.println("->Aboneleri Listelemek İçin -e- tuşlayınız.");
+            System.out.println("-----------------------------------------");
+            System.out.println("->Parktaki Araç Sayısını Görmek İçin -f- tuşlayınız.");
+            System.out.println("-----------------------------------------");
+            System.out.println("->Çıkış Yapmak İçin -q- tuşlayınız.");
+            System.out.println("-----------------------------------------");
+            System.out.println("Seçiminiz: ");
 
             //Kullanicidan sayi aliniyor.
 
@@ -49,7 +56,7 @@ public class OtoparkUygulama {
                 secim = girdi.charAt(0);
                 tarayici.nextLine();
             } catch (Exception e) {
-                System.out.println("Hata: Lutfen sadece sayi giriniz!");
+                System.err.println("❌Hata: Lütfen sadece sayı giriniz!");
                 tarayici.nextLine();//hatali girdiyi temizler.
                 continue; //Dongumuzun basina doner.
             } //3. Secime Gore Yonlendirme
@@ -85,15 +92,15 @@ public class OtoparkUygulama {
                         }
                     }
 
-                    System.out.println("Parktaki anlik arac sayisi: " + sayac);
+                    System.out.println("Parktaki anlık arac sayisi: " + sayac);
                     break;
 
                 case 'q':
-                    System.out.println("Sisctem kapatiliyor.Iyi gunler!");
+                    System.out.println("Sistem kapatiliyor.İyi günler!😊");
                     devamMi = false;
                     break;
                 default:
-                    System.out.println("Hatali secim! Tekrar deneyiniz.");
+                    System.err.println("❌Hatalı seçim! Tekrar deneyiniz.");
 
             }
         }
@@ -110,27 +117,27 @@ public class OtoparkUygulama {
     private static void aracGirisEkrani(OtoparkService service) {
       //Otoparkın kapasitesinin dolu olup olmadıgını kontrol etme
         if (service.otoparkDoluMu()) {
-            System.out.println("\n🛑 HATA: OTOPARK TAMAMEN DOLU! 🛑");
-            System.out.println(">>> Kapasite dolu olduğu için yeni araç girişi yapılamaz.");
+            System.err.println("\n🛑 HATA: OTOPARK TAMAMEN DOLU! 🛑");
+            System.out.println(">>> ❗Kapasite dolu olduğu için yeni araç girişi yapılamaz.");
             return; // Metodu burada kesip ana menüye fırlatır.
         }
-        System.out.println("\n---Arac girisi: ");
+        System.out.println("\n--->Araç girişi: ");
         System.out.print("Plaka: ");
 
         String plaka = tarayici.nextLine().toUpperCase().replaceAll("\\s+", "");
 
         if (plaka.trim().isEmpty()) {
-            System.out.println("Hata: Plaka boş olamaz!");
+            System.err.println("❌Hata: Plaka boş olamaz!");
             return;
         }
 
-        System.out.println("Tip (1-Otomobil ,2-Motosiklet): ");
+        System.out.println("Tip (1-Otomobil---2-Motosiklet): ");
         int tip = -1;
         try {
             tip = tarayici.nextInt();
             tarayici.nextLine(); // Buffer temizliği
         } catch (Exception e) {
-            System.out.println("Hata: Sayı girmelisiniz!");
+            System.err.println("❌Hata: Sayı girmelisiniz!");
             tarayici.nextLine();
             return;
         }
@@ -141,21 +148,43 @@ public class OtoparkUygulama {
         } else if (tip == 2) {
             arac = new Motosiklet(plaka);
         } else {
-            System.out.println("Hatali arac tipi!");
+            System.err.println("❌Hatali arac tipi!");
             return;
         }
         // Bunu görürsek işlemi burada iptal edip ana menüye dönüyoruz.
         if (arac.getPlaka().equals("HATALI-PLAKA")) {
-            System.out.println(">>> Giriş işlemi iptal edildi. Lütfen geçerli bir plaka giriniz. <<<");
+            System.out.println(">>> ❗Giriş işlemi iptal edildi. Lütfen geçerli bir plaka giriniz. <<<");
             return; // Metottan çıkar, ana menüye döner.
         }
 
-        System.out.println("Abone ID: (Yoksa enter'a basiniz)");
-        String aboneId = tarayici.nextLine();
-        if (!aboneId.isEmpty() && service.getAboneler().containsKey(aboneId)) {
+        while (true) {
+
+            System.out.println("Abone ID (Yoksa Enter'a basiniz):");
+            String aboneId = tarayici.nextLine().trim();
+
+            // Enter'a basıldıysa → abonesiz devam
+            if (aboneId.isEmpty()) {
+                break;
+            }
+
+            // FORMAT KONTROLÜ (Axxx)
+            if (!aboneId.matches("A\\d{3}")) {
+                System.err.println("❗Hata:Abone ID formata uygun değil.");
+                continue;
+            }
+
+            // KAYITLI MI?
+            if (!service.getAboneler().containsKey(aboneId)) {
+                System.out.println("❗Hata:Bu Abone ID sistemde kayıtlı değil.");
+                continue;
+            }
+
+            // HER ŞEY DOĞRU → ABONEYİ ATA
             arac.setAbone(service.getAboneler().get(aboneId));
-            System.out.println("Abone girisi algilandi.");
+            System.out.println("Abone girişi algılandı.");
+            break;
         }
+
 
         // --- DÖNGÜ BAŞLIYOR ---
         boolean parkIslemiBasarili = false;
@@ -174,7 +203,7 @@ int sonSiraIndex=service.getParkMatrisi()[0].length -1;
             try {
                 kat = tarayici.nextInt();
                 if (kat == -1) {
-                    System.out.println("İşlem iptal edildi.");
+                    System.out.println("❗İşlem iptal edildi.❗");
                     return;
                 }
 
@@ -190,8 +219,8 @@ int sonSiraIndex=service.getParkMatrisi()[0].length -1;
 
             } catch (Exception e) {
                 // Hata mesajını bas ama BEKLEME YAPMA
-                System.out.println(">> UYARI: " + e.getMessage());
-                System.out.println(">> Lütfen boş bir yer seçiniz:");
+                System.err.println(">> UYARI: " + e.getMessage());
+                System.err.println(">> Lütfen boş bir yer seçiniz:");
 
                 // BURADAKİ nextLine()'ı SİLDİK. ARTIK TAKILMADAN BAŞA DÖNECEK.
             }
@@ -199,9 +228,9 @@ int sonSiraIndex=service.getParkMatrisi()[0].length -1;
     }
 
     private static void aracCikisEkrani(OtoparkService service) {
-        System.out.println("\n--- ARAC CIKIS ---");
+        System.out.println("\n--- ARAÇ ÇIKIŞ ---");
 
-        System.out.println("Cıkıs yapacak aracı plakasi: ");
+        System.out.println("Çıkış yapacak aracın plakası: ");
 
         // DÜZELTME 1: Plakadaki tüm boşlukları siliyoruz (örn: "06 DDL 107" -> "06DDL107")
         String plaka = tarayici.nextLine().toUpperCase().replaceAll("\\s+", "");
@@ -217,53 +246,61 @@ int sonSiraIndex=service.getParkMatrisi()[0].length -1;
             String formatliUcret = String.format("%.2f", ucret);
 
             System.out.println("------------------------------------");
-            System.out.println(">>>> ODENECEK TUTAR: " + formatliUcret + " TL <<<<");
+            System.out.println(">>>> ÖDENECEK TUTAR: " + formatliUcret + " TL <<<<");
             System.out.println("------------------------------------");
 
         } catch (Exception e) {
-            System.out.println("HATA: Cıkıs yapilamadi! (" + e.getMessage() + ")");
+            System.err.println("❌HATA: Çıkış yapılamadı! (" + e.getMessage() + ")");
         } finally {
-            System.out.println("Cikis islemi tamamlandi.");
+            System.out.println("Çıkış işlemi tamamlandı.");
         }
     }
 
     private static void aboneEkleEkrani(OtoparkService service) {
-        System.out.println("\n--- YENI ABONE KAYDI ---");
+        System.out.println("\n--- YENİ ABONE KAYDI ---");
 
-        System.out.print("Abone ID (orn: A001): ");
-        String id = tarayici.nextLine();
+        System.out.print("Abone ID (örn: A001): ");
+        String id = tarayici.nextLine().trim();
+
         if (id.isEmpty()) {
-            System.out.println("Hata: ID boş olamaz!");
-            return;
+            System.err.println("❌Hata: ID boş olamaz!");
+            return; // 🔁 ANA MENÜ
+        }
+        // FORMAT + BOŞ KONTROL (EN BAŞTA)
+        if (!id.matches("A\\d{3}")) {
+            System.err.println("❌Hata:Abone ID formata uygun değil!");
+            return; // 🔁 ANA MENÜYE DÖNER
         }
 
+        // AYNI ID VAR MI?
+        if (service.getAboneler().containsKey(id)) {
+            System.out.println("Bu Abone ID zaten kayıtlı.");
+            return; // 🔁 ANA MENÜYE DÖNER
+        }
+
+        // SADECE BURAYA GELİRSE DEVAM EDER
         System.out.print("Ad Soyad: ");
         String adSoyad = tarayici.nextLine();
 
-        // --- TİP KONTROLÜ (SONSUZ DÖNGÜ) ---
-        // Kullanıcı doğru yazana kadar buradan çıkamaz
-        String tip = "";
+        String tip;
         while (true) {
-            System.out.print("Abone Tipi (Aylik / Saatlik): ");
+            System.out.print("Abone Tipi (Aylık / Saatlik): ");
             String girdi = tarayici.nextLine().trim();
 
-            if (girdi.equalsIgnoreCase("Aylik")) {
-                tip = "Aylik";
-                break; // Doğru girdi, döngüden çık
+            if (girdi.equalsIgnoreCase("Aylık") || girdi.equalsIgnoreCase("Aylik")) {
+                tip = "Aylık";
+                break;
             } else if (girdi.equalsIgnoreCase("Saatlik")) {
                 tip = "Saatlik";
-                break; // Doğru girdi, döngüden çık
+                break;
             } else {
-                System.out.println("❌ Hatalı giriş! Lütfen sadece 'Aylik' veya 'Saatlik' yazınız.");
+                System.err.println("❌ Hatalı giriş! Lütfen sadece 'Aylık' veya 'Saatlik' yazınız.");
             }
         }
 
-        // Servise gonderiyoruz, o hem dosyaya hem listeye kaydediyor
         service.yeniAboneEkle(id, adSoyad, tip);
-
-        System.out.println("Basarili! " + adSoyad + " sisteme eklendi.");
+        System.out.println("✔ Başarılı! " + adSoyad + " sisteme eklendi.");
     }
-
-
 }
+
 

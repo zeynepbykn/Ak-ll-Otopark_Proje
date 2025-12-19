@@ -32,7 +32,7 @@ public class SaatlikAbone extends Abone {
     public void setAnlikIndirimOrani(double yeniOran) {
         // Validation(kontrol):oran olarak verecegi icin 0 ile 1 arasi olmasi kontrolu yoksa "-" ye duser.
         if (yeniOran < 0 || yeniOran > 1.0) {
-            System.err.println("HATA: Geçersiz indirim oranı!");
+            System.err.println("❌HATA: Geçersiz indirim oranı!");
             return;
         }
         this.anlikIndirimOrani = yeniOran;

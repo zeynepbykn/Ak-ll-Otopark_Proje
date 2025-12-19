@@ -1,2 +1,7 @@
 A1;Zeynep;Aylik
 A2;Sude;Saatlik
+B004;Sude ÖZBAY;Aylik
+B002;Ali;Saatlik
+B004;veli;Saatlik
+A007;Beyza AHMET;Saatlik
+A009;Kübra Topcu;Aylık

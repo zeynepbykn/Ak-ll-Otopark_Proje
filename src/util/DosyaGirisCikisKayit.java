@@ -32,7 +32,7 @@ public final class DosyaGirisCikisKayit {
             writer.newLine(); // Alt satıra geç
 
         } catch (IOException e) {
-            System.err.println("Dosyaya giriş kaydı yazılamadı!");
+            System.err.println("❌Dosyaya giriş kaydı yazılamadı!");
         }
     }
 
@@ -54,7 +54,7 @@ public final class DosyaGirisCikisKayit {
                 satirlar.add(satir);
             }
         } catch (IOException e) {
-            System.err.println("Dosya okunamadı!");
+            System.err.println("❌Dosya okunamadı!");
         }
         return satirlar;
     }
@@ -89,7 +89,7 @@ public final class DosyaGirisCikisKayit {
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.err.println("Dosya güncellenemedi!");
+            System.err.println("❌Dosya güncellenemedi!");
         }
 
         return girisZamani;

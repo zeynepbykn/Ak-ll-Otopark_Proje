@@ -33,10 +33,10 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
     /*Encapsulation kavrami ile değişkenleri 'private' yaparak korumaya aliyoruz.
     Sadece get ve set metotları ile  erişilebilirler.*/
 
-    private String plaka;
+
     private LocalDateTime girisZamani;
     private Boolean parktaMi;//(true/false) olarak
-
+    private String plaka;
     /* Constructor nesne hafizada olusurken calisir
      */
 
@@ -147,10 +147,8 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
         return parktaMi;
     }
 
-
     //Her arac kendi ucretini hesaplayacak.(Polimorfizm)
     //override edilmek zorunda->override edilip o nesneye gore metodun ici doldurulmalı.
     public abstract double odenecekTutar(double sureDakika);
-
 
 }

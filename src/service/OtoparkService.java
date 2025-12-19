@@ -21,6 +21,10 @@ public class OtoparkService {
     // < key-plaka, value-Parkyeri nesnesi >
     private Map<String, ParkYeri> parktakiAraclar; //kayit defteri
 
+    public boolean aboneIdFormatiDogruMu(String id) {
+        return id.matches("A\\d{3}");
+    }
+
     // OtoparkService içinde
     public Map<String, Abone> getAboneler() {
         return aboneler;
@@ -73,8 +77,8 @@ public class OtoparkService {
         // Dosya sınıfından satırları istiyoruz. Dosya yoksa boş liste gelir, sorun çıkmaz.
         List<String> kayitlar = DosyaGirisCikisKayit.kayitlariOku();
 
-        if(!kayitlar.isEmpty()) {
-            System.out.println("Sistem: Dosyadan " + kayitlar.size() + " arac geri yukleniyor...");
+        if (!kayitlar.isEmpty()) {
+            System.out.println("Sistem: Dosyadan " + kayitlar.size() + " araç geri yukleniyor...");
         }
 
         for (String satir : kayitlar) {
@@ -116,14 +120,15 @@ public class OtoparkService {
                 yer.parkEt(arac);
                 parktakiAraclar.put(plaka, yer);
 
-                System.out.println("-> Geri yuklendi: " + plaka + " (" + tip + ")");
+                System.out.println("-> Geri yüklendi: " + plaka + " (" + tip + ")");
 
             } catch (Exception e) {
-                System.err.println("Eski kayit yuklenirken hata: " + e.getMessage());
+                System.err.println("Eski kayıt yüklenirken hata: " + e.getMessage());
             }
         }
     }
-//Fail Fast
+
+    //Fail Fast
     public boolean otoparkDoluMu() {
         // 1. Toplam kapasiteyi hesapla (Kat Sayısı x Sıra Sayısı)
         // Senin örneğinde: 3 x 5 = 15
@@ -140,7 +145,7 @@ public class OtoparkService {
 
         // 1. Güvenlik Kontrolü: Araç boş mu?
         if (arac == null) {
-            System.out.println("HATA: Boş (null) bir araç otoparka giremez!");
+            System.err.println("HATA: Boş (null) bir araç otoparka giremez!");
             return; // İşlemi anında durdur
         }
 
@@ -178,15 +183,15 @@ public class OtoparkService {
             kaydedilecekId = arac.getAbone().getAboneId();
         }
         // EKLENECEK: Dosyaya giriş kaydı
-        DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun,kaydedilecekId);
+        DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun, kaydedilecekId);
 
         //Basarı Mesaji
-        System.out.println("Arac basariyla " + sira + ". Kat, " + sutun + ". Sıraya park edildi.");
-        System.out.println("KAYT: Plaka (" + arac.getPlaka() + ") Map listesine kaydedildi.");
+        System.out.println("✅Araç başariyla " + sira + ". Kat, " + sutun + ". Sıraya park edildi.\n");
+        System.out.println("KAYIT: Plaka (" + arac.getPlaka() + ") Otopark listesine kaydedildi.");
     }
 
     //Cikmak isteyen aracin borccunu hesaplar,tahsil eder ve otoparki siler
-    public double aracCikis(String plaka)  {
+    public double aracCikis(String plaka) {
         //Plakadan bize o aracin durdugu parkYeri nesnesini veriyor.
         //get.(key) diuerek value degerini cagiririz.
         ParkYeri yer = parktakiAraclar.get(plaka);
@@ -229,7 +234,7 @@ public class OtoparkService {
         System.out.println("Tarife Tipi  : " + tarifeTipi); // <-- BURASI EKLENDİ
         System.out.println("Giriş Zamanı : " + girisZamani.format(format));
         System.out.println("Çıkış Zamanı : " + cikisZamani.format(format));
-        System.out.println("Toplam Süre  : " + (int)sureDakika + " dakika");
+        System.out.println("Toplam Süre  : " + (int) sureDakika + " dakika");
         System.out.println("=================================\n");
         // ----------------------------------------------
 
@@ -239,15 +244,44 @@ public class OtoparkService {
 
     }
 
-    public void yeniAboneEkle(String id, String adSoyad, String tip) {
+    private void aboneIdKontrol(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Abone ID boş olamaz!");
+        }
+
+        id = id.trim();
+
+        if (!id.matches("^A\\d{3}$")) {
+            throw new IllegalArgumentException(
+                    "Abone ID formatı hatalı! Örnek: A002"
+            );
+        }
+    }
+
+    public boolean yeniAboneEkle(String id, String adSoyad, String tip) {
+
+        // FORMAT KONTROLÜ
+        if (!aboneIdFormatiDogruMu(id)) {
+            return false;
+        }
+
+        // AYNI ID VAR MI
+        if (aboneler.containsKey(id)) {
+            return false;
+        }
+
         // Dosyaya yaz
         DosyaAboneKayit.aboneEkle(id, adSoyad, tip);
 
-        // Runtime Map güncellemesi
+        // Map'e ekle
         aboneler.put(id, tip.equalsIgnoreCase("Aylik")
                 ? new AylikAbone(id, adSoyad)
                 : new SaatlikAbone(id, adSoyad));
+
+        return true;
     }
+
+
     //Raporlama ve Gorsellestirme
     //Otoparkin guncel durumunu dis siniflara göstermek icin kullanilir.
     // !parkMatrisi private oldugundan getter metodu ile otoparkın anlık doluluk gorselini gorebiliriz.

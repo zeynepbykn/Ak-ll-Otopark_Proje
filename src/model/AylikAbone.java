@@ -26,7 +26,7 @@ public class AylikAbone extends Abone {
     //Setter
     public void setAylikIndirimOrani(double yeniOran) {
         if (yeniOran < 0 || yeniOran > 1.0) {
-            System.err.println("HATA: Geçersiz oran!");
+            System.err.println("❌HATA: Geçersiz oran!");
             return;
         }
         this.aylikIndirimOrani = yeniOran;
