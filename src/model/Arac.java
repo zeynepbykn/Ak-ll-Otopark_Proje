@@ -24,7 +24,9 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
         this.abone = abone;
     }
 
-    protected double indirimOrani() {
+    public  Abone getAbone(){return abone;}
+
+    public double indirimOrani() {
         return (abone != null) ? abone.indirimOraniBelirle() : 0.0;
     }
 
@@ -48,48 +50,56 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
         }
         this.parktaMi = false;
     }
+
     /*Sadece Türk plakasi olmamasi durumunda standart bi sart kosmak problem
     yaratacagi icin bi kontrol sarti olmali fakat cok fazla sart oldugu ıcın standrt bir dongu
     verimsiz ve hataya acik bi kod yigini olacakti bu yuzden=Regex (Regular Expression) kullandim.
      */
+    // model/Arac.java içindeki plakaKontrol metodunu bununla değiştir:
     private String plakaKontrol(String plaka) throws HataliPlakaException {
-
         if (plaka == null) {
             throw new HataliPlakaException("HATA: Plaka boş olamaz!");
         }
 
-        // trim + büyük harf
-        //Küçük harf girildiyse buyuk  harfe çevirmek ve başta ve sonda(trim) olusmus olabilecek bosluklari temizlemek icin.
-        plaka = plaka.trim().toUpperCase();
+        // --- KESİN ÇÖZÜM ---
+        // 1. Önce trim() yapıp kenarları temizle.
+        // 2. Sonra toUpperCase() ile büyüt.
+        // 3. EN ÖNEMLİSİ: replaceAll("\\s+", "") ile ARADAKİ boşlukları da yok et.
+        // Örn: " 06  abc 12 "  --->  "06ABC12" olur.
+        String temizPlaka = plaka.trim().toUpperCase().replaceAll("\\s+", "");
 
-        // [A-Z0-9 -]=Sadece Harf, Rakam, Bosluk ve Tire sarti icin.
-        // {5,15}=En az 5, en cok 15 karakter sarti.
-        //"^"Yazi tamamen plaka olmalı anlamina gelmesi icin.
-        //"$" Arkasından baska karakter gelmesini engellemek icin.
-        // Global plaka formatı (ülkeden bağımsız)
-        String globalPlakaKalibi = "^[A-Z0-9 -]{5,15}$";
+        // Regex'i de boşluksuz haliyle güncelledim (Tire ve boşlukları kaldırdım)
+        String globalPlakaKalibi = "^[A-Z0-9]{5,15}$";
 
-        if (!plaka.matches(globalPlakaKalibi)) {
+        if (!temizPlaka.matches(globalPlakaKalibi)) {
             throw new HataliPlakaException(
-                    "HATA: Plaka geçersiz! (Girdi: " + plaka + ")"
+                    "HATA: Plaka geçersiz! (Temizlenmiş hali: " + temizPlaka + ")"
             );
         }
 
-        return plaka;
+        return temizPlaka;
     }
-        //1.Dosyadan okudugumuz eski tarihi buraya set edecegiz.
-        public void setGirisZamani(LocalDateTime girisZamani){
-            this.girisZamani=girisZamani;
-            this.parktaMi=true;
-        }
-        //2.Dosyaya yazarken otomobilmi motosikletmi oldugunu anlamak icin
-        public String getTip() {
-            return this.getClass().getSimpleName();
-        }
+
+    //1.Dosyadan okudugumuz eski tarihi buraya set edecegiz.
+    public void setGirisZamani(LocalDateTime girisZamani) {
+        this.girisZamani = girisZamani;
+        this.parktaMi = true;
+    }
+
+    //2.Dosyaya yazarken otomobilmi motosikletmi oldugunu anlamak icin
+    public String getTip() {
+        return this.getClass().getSimpleName();
+    }
 
 /* Otopark doluluk ve verimlilik raporu icin alt siniflar bunu doldurmak zorunda.
  Matris (2D Dizi) yapısında teknik olarak her hücre 1 araç tutar Yani aslinda verimlilik acisindan %100 degil fakat
  ArrayList<Arac> ile sadece arclarin girisini kaydetmek yerine matris ile kat konum bilgilerini ozel olarak tutmak istedik*/
+
+
+    //Aracin bir abonesi varmi(varsa true ypksa false doner)
+    public boolean isAbone() {
+        return this.abone != null;
+    }
 
     public abstract String yerKaplamaDurumu();
 

@@ -7,7 +7,7 @@ public class SaatlikAbone extends Abone {
     indirim oranini duruma gore degıstırılebilir yapcaz ama main buraya karisabilsin istemiyoruz.
      */
 
-    private double anlikIndirimOrani = 0.0;
+    private double anlikIndirimOrani = 0.20;
 
     public SaatlikAbone(String aboneId, String adSoyad) {
         /*Abone sinifinda degiskenleri private yapmistik

@@ -16,13 +16,17 @@ public final class DosyaGirisCikisKayit {
 
     // --- 1. KAYDETME (YAZMA) ---
     // Araç girince Service sınıfı burayı çağırır.
-    public static void girisKaydet(String plaka, String tip, int kat, int sira) {
+    public static void girisKaydet(String plaka, String tip, int kat, int sira,String aboneId) {
         // FileWriter(..., true) komutundaki 'true', "Dosyanın sonuna ekle" demektir.
+        if (aboneId == null || aboneId.isEmpty()) {
+            aboneId = "YOK";
+        }
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DOSYA_ADI, true))) {
 
             // Verileri aralarına noktalı virgül (;) koyarak birleştiriyoruz.
             // Örnek Satır: 34ABC123;Otomobil;0;1;2025-12-18T15:30:00
-            String kayitSatiri = plaka + ";" + tip + ";" + kat + ";" + sira + ";" + LocalDateTime.now();
+            String kayitSatiri = plaka + ";" + tip + ";" + kat + ";" + sira + ";" + LocalDateTime.now() + ";" + aboneId;
 
             writer.write(kayitSatiri);
             writer.newLine(); // Alt satıra geç

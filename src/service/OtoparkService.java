@@ -88,6 +88,9 @@ public class OtoparkService {
                 int sira = Integer.parseInt(veri[3]);
                 LocalDateTime zaman = LocalDateTime.parse(veri[4]);
 
+                // Dosyada 6. veri (AboneID) var mı diye bakıyoruz. Yoksa "YOK" kabul et.
+                String dosyaAboneId = (veri.length > 5) ? veri[5] : "YOK";
+
                 // 1. Aracı Tipine Göre Canlandır
                 Arac arac = null;
                 if (tip.equals("Otomobil")) {
@@ -100,6 +103,13 @@ public class OtoparkService {
 
                 // 2. Eski zamanı ayarla (Şimdi girmiş gibi olmasın)
                 arac.setGirisZamani(zaman);
+
+                // Eğer dosyada bir abone ID yazıyorsa ve o abone listemizde varsa, araca ekle.
+                if (!dosyaAboneId.equals("YOK")) {
+                    if (aboneler.containsKey(dosyaAboneId)) {
+                        arac.setAbone(aboneler.get(dosyaAboneId));
+                    }
+                }
 
                 // 3. Matrise ve Map'e yerleştir
                 ParkYeri yer = parkMatrisi[kat][sira];
@@ -150,8 +160,12 @@ public class OtoparkService {
        */
         parktakiAraclar.put(arac.getPlaka(), parkMatrisi[sira][sutun]);// o parkMatrisi[i][j]->oradaki nesneyi cagiririz
 
+        String kaydedilecekId = "YOK";
+        if (arac.isAbone()) {
+            kaydedilecekId = arac.getAbone().getAboneId();
+        }
         // EKLENECEK: Dosyaya giriş kaydı
-        DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun);
+        DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun,kaydedilecekId);
 
         //Basarı Mesaji
         System.out.println("Arac basariyla " + sira + ". Kat, " + sutun + ". Sıraya park edildi.");
@@ -187,11 +201,19 @@ public class OtoparkService {
         //double ucret=UcretHesapla.standartUcretHesapla(sureDakika);
         double ucret = arac.odenecekTutar(sureDakika);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-
+        String tarifeTipi = "STANDART TARİFE";
+        if (arac.isAbone()) {
+            tarifeTipi = "ABONE TARİFESİ (%20 İndirim)";
+            // Eğer indirim oranı 1.0 ise (Aylık Abone)
+            if (arac.indirimOrani() == 1.0) {
+                tarifeTipi = "AYLIK ABONE (Ücretsiz)";
+            }
+        }
         System.out.println("\n=================================");
         System.out.println("       OTOPARK ÇIKIŞ FİŞİ       ");
         System.out.println("=================================");
         System.out.println("Araç Plakası : " + plaka);
+        System.out.println("Tarife Tipi  : " + tarifeTipi); // <-- BURASI EKLENDİ
         System.out.println("Giriş Zamanı : " + girisZamani.format(format));
         System.out.println("Çıkış Zamanı : " + cikisZamani.format(format));
         System.out.println("Toplam Süre  : " + (int)sureDakika + " dakika");
