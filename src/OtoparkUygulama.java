@@ -1,7 +1,7 @@
 import model.*;
 import service.OtoparkService;
-import exception.OtoparkDoluException;
 import util.Raporlayici;
+import model.AracTipi;
 
 import java.util.Scanner;
 
@@ -115,7 +115,7 @@ public class OtoparkUygulama {
     //nextLine() -->  \n dahil olmak uzere herseyi tuketir.
 
     private static void aracGirisEkrani(OtoparkService service) {
-      //Otoparkın kapasitesinin dolu olup olmadıgını kontrol etme
+        //Otoparkın kapasitesinin dolu olup olmadıgını kontrol etme
         if (service.otoparkDoluMu()) {
             System.err.println("\n🛑 HATA: OTOPARK TAMAMEN DOLU! 🛑");
             System.out.println(">>> ❗Kapasite dolu olduğu için yeni araç girişi yapılamaz.");
@@ -133,6 +133,7 @@ public class OtoparkUygulama {
 
         System.out.println("Tip (1-Otomobil---2-Motosiklet): ");
         int tip = -1;
+
         try {
             tip = tarayici.nextInt();
             tarayici.nextLine(); // Buffer temizliği
@@ -142,14 +143,25 @@ public class OtoparkUygulama {
             return;
         }
 
-        Arac arac = null;
+        AracTipi secilenTip = null;
+        // 1. Kullanıcının girdiği sayıyı (1 veya 2) bizim Enum yapımıza çeviriyoruz.
         if (tip == 1) {
-            arac = new Otomobil(plaka);
+            secilenTip = AracTipi.OTOMOBIL;
         } else if (tip == 2) {
-            arac = new Motosiklet(plaka);
+            secilenTip = AracTipi.MOTOSIKLET;
         } else {
-            System.err.println("❌Hatali arac tipi!");
+            System.err.println("❌ Hatalı araç tipi seçimi!");
             return;
+        }
+
+        Arac arac = null;
+        switch (secilenTip) {
+            case OTOMOBIL:
+                arac = new Otomobil(plaka);
+                break;
+            case MOTOSIKLET:
+                arac = new Motosiklet(plaka);
+                break;
         }
         // Bunu görürsek işlemi burada iptal edip ana menüye dönüyoruz.
         if (arac.getPlaka().equals("HATALI-PLAKA")) {
@@ -191,12 +203,12 @@ public class OtoparkUygulama {
 
         while (!parkIslemiBasarili) {
 
-int sonKatIndex=service.getParkMatrisi().length -1;
-int sonSiraIndex=service.getParkMatrisi()[0].length -1;
+            int sonKatIndex = service.getParkMatrisi().length - 1;
+            int sonSiraIndex = service.getParkMatrisi()[0].length - 1;
             // Kullanıcıya tekrar tekrar başlık basmak yerine direkt soruyoruz
             System.out.println("\n--- Park Yeri Seçiniz (Çıkış için Kat: -1) ---");
 
-            System.out.print("Hangi Kat (0-" +sonKatIndex+ "): ");
+            System.out.print("Hangi Kat (0-" + sonKatIndex + "): ");
             int kat = -1;
             int sira = -1;
 
@@ -207,7 +219,7 @@ int sonSiraIndex=service.getParkMatrisi()[0].length -1;
                     return;
                 }
 
-                System.out.print("Hangi Sira (0-" +sonSiraIndex+ "): ");
+                System.out.print("Hangi Sira (0-" + sonSiraIndex + "): ");
                 sira = tarayici.nextInt();
                 tarayici.nextLine(); // Enter tuşunu temizle
 

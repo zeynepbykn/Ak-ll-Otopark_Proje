@@ -56,7 +56,6 @@ public class ParkYeri {
     }
 
     //Setterlar
-
     public void setSira(int sira) throws GecersizMiktarException {
         // Matriste gecerli sıra numarasi sart
         if (sira < 0) {
