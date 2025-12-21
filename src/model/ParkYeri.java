@@ -10,8 +10,7 @@ public class ParkYeri {
     private int sutun;       // Matris sutunu (Y koordinati)
     private boolean doluMu;
 
-    // Composition=Sahip olabilme yani bir arac degil, bir arac baridirabilir.
-
+    // Composition=Sahip olabilme yani bir arac degil, bir arac barindirabilir.
     private Arac parkEdenArac;
 
     // Contructor=kurucu metot yani nesne olusturuldugu an calısan ilk yer.
@@ -19,7 +18,7 @@ public class ParkYeri {
     public ParkYeri(int yerNumarasi) {
         this(yerNumarasi, 0, 0);
     }
-
+    //Constructor Chaining (Zincirleme)
     public ParkYeri(int yerNumarasi, int sira, int sutun) {
         //this.:private degisken olan yer numarasidir kalicidir.
         //=yerNumarasi:parametre olan degerdir gecicidir.
@@ -31,12 +30,11 @@ public class ParkYeri {
             setSira(sira);
             setSutun(sutun);
         } catch (GecersizMiktarException hataKutusu) {
-            /*yakalama yapiyo cunkü hem akis bozulmuyo yanş programş kapatmiyo hem de
-            hata programi patlatamiyo.
-             */
+            //yakalama yapiyo cunku hem akis bozulmuyor yani programi kapatmiyor hem de hata programi patlatamiyo.
 
             System.err.println("❌Park Yeri Hatası: Sıra negatif olamaz!" + hataKutusu.getMessage());
             System.err.println(">>> Gönderilen Hatalı Değerler: Sıra=" + sira + ", Sütun=" + sutun);
+
             // Hata olsa bile program çökmesin diye varsayılan değer (0) atıyoruz
             /*Yani bi yer acilip icinde kullanissiz degerler kalmassin diye o yeri yine olusturmus oluyoruz
             ama kullanimi olmasin diye 0 olarak atiyoruz bi nevi var olmayan bi yere,cope atmak icin,
@@ -45,8 +43,9 @@ public class ParkYeri {
             this.sutun = 0;
             /* Bunu ekliyoruz cunku hata vermemesi adına [0,0] konumuna
             atayinca bu sefer matriste gercekten var olan [0,0]
-            konumu isgal edebilir hatali olup orda bekledigini bi sekilde ayirt etmekiyiz.
-            o yuzden bi nevi belirtec yapıp sonra gereli sinifta burdaki atamaya gore sartlandirip
+            konumu isgal edebilir hatali olup orda bekledigini bi sekilde ayirt etmel
+            iyiz.
+            o yuzden bi nevi belirtec yapıp sonra gerekli sinifta burdaki atamaya gore sartlandirip
             kullanmayalim.
             */
             this.yerNumarasi = -1;

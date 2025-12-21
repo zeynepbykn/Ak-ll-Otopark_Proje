@@ -1,36 +1,31 @@
 package model;
-/*
- * Abone sınıfı, otopark abonelerini temsil eden soyut bir sınıftır.
- * Alt sınıflar, kendi indirim mantığını override ederek belirleyecektir.
- */
+// Arac sinifi gibi abstracttir.
 public abstract class Abone  {
+
     //Encapsulation
     private String aboneId;
     private String adSoyad;
 
 
     public Abone(String aboneId, String adSoyad) {
-
+//ID ıcın kullanici bazli hata girisleri kontrolü ve donut
         if (aboneId == null || aboneId.trim().isEmpty()) {
+            //bu javanin kendi kutuphanesinden bir hatadir yani ayrica ozel hata tanimlamadik zaten bos olma durumu evrensel bi hata
             throw new IllegalArgumentException("Abone ID boş olamaz.");
         }
         this.aboneId = aboneId;
         this.adSoyad = adSoyad;
     }
 
-    // Abstract Metot(Polimorfizm): Farklı indirim mantığı için
-    /*Polimorfizm=alt siniflarda tanimli metotu ata sinifta tek bir komutla her nesne
-    icin kendine has sekilde calismasini saglayan komut.
-  */
+    //Polimorfizm alt siniflarda tanimli metotu ata sinifta tek bir komutla her nesne icin kendine has sekilde calismasini saglar.
     // Yani gerekli alt siniflar bunu override etmek zorunda.
 
 
     public abstract double indirimOraniBelirle();
 
     //Getter ve Setter.
-    /*gerekli durumlarda alt siniflar private halinde
-     kullanamayacagi icin set ile gorunur ve kullanilabilir kiliyoruz
-     */
+    //gerekli durumlarda alt siniflar private halinde kullanamayacagi icin set ile gorunur ve kullanilabilir kiliyoruz
+
     public String getAboneId() {
         return aboneId;
     }

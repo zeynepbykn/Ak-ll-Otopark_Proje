@@ -1,25 +1,26 @@
-package model;// Bu sınıfın 'model' (Nesne) kutusunda olduğunu belirtir.
+package model;
 
+//Projede model package da bulunmayan siniflari kullanabilmek icin tanitiyoruz.
 import exception.HataliPlakaException;
 import interfaces.Fiyatlanabilir;
-import model.Abone;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter; //
-
-// Kendi yazdığımız hata sınıfını çağırıyoruz. (Plaka hatalıysa fırlatacağız)
 import interfaces.GirisCikisTakip;
 
-/* Abstract sinifi soyuttur bi nevi ust baslik.
-Yani bi başlik içinde ortak ozellikleri  toplamak icin kullandildi.
-Bu yüzden new Arac() seklinde bir nesne uretilemez ortak bi turle degil spesifik bir seyle nesne uretebiliriz.
-Fakat (public oldugu icin) herhangi bir sinif miras alabilir
- */
+//Javanin kendi içinde bulunan tarih/saat kutuphanesinde yararlabilmek icin kullandık.
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-// GirisCikisTakip sinifi otopark sistemine "Ben giris ve cikis yapabilirim" taahhudu verir.
+/* Abstract sinifi soyuttur bi nevi ust baslik. Yani bi başlik içinde ortak ozellikleri  toplamak icin kullandildi.
+Ortak bi turle degil spesifik bir seyle nesne uretebiliriz bu yüzden new Arac() seklinde bir nesne uretilemez.
+Fakat (public oldugu icin) herhangi bir sinif miras alabilir.*/
+
+// GirisCikisTakip interfacei tum araclarin giris-cikis islemi yapmasini garanti ediyor.
 public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
-    protected Abone abone; // varsa abone
 
+    //Protected yapip miras almaya acik hale getirdik.
+   //Her aracin bir abonesi olabilecegi icin ona yer ayiriyor.(Car Has-A Subscriber=Association ilişki)
+    protected Abone abone;
+
+//Protected degiskeni disaridan gelen gecici degiskene esitlemek icin.
     public void setAbone(Abone abone) {
         this.abone = abone;
     }
@@ -33,12 +34,12 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
     /*Encapsulation kavrami ile değişkenleri 'private' yaparak korumaya aliyoruz.
     Sadece get ve set metotları ile  erişilebilirler.*/
 
-
     private LocalDateTime girisZamani;
     private Boolean parktaMi;//(true/false) olarak
 
     private String plaka;
-    // Constructor nesne hafizada olusurken calisir
+
+    // Constructor nesne hafizada olusurken calisir bu sebepten eş zamanlı hata kontrolu ile bilgi karmasasi ve kirliligini onler
     //Plaka parametreli constructor
     public Arac(String plaka) {
         try {
@@ -50,92 +51,72 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
         this.parktaMi = false;
     }
 
-    /*Sadece Türk plakasi olmamasi durumunda standart bi sart kosmak problem
-    yaratacagi icin bi kontrol sarti olmali fakat cok fazla sart oldugu ıcın standrt bir dongu
-    verimsiz ve hataya acik bi kod yigini olacakti bu yuzden=Regex (Regular Expression) kullandim.
-     */
-    // model/Arac.java içindeki plakaKontrol metodunu bununla değiştir:
     private String plakaKontrol(String plaka) throws HataliPlakaException {
         if (plaka == null) {
             throw new HataliPlakaException("HATA: Plaka boş olamaz!");
         }
 
-        // --- KESİN ÇÖZÜM ---
-        // 1. Önce trim() yapıp kenarları temizle.
-        // 2. Sonra toUpperCase() ile büyüt.
-        // 3. EN ÖNEMLİSİ: replaceAll("\\s+", "") ile ARADAKİ boşlukları da yok et.
-        // Örn: " 06  abc 12 "  --->  "06ABC12" olur.
+        //trim() metodu ile bas ve son bosluklarini temizledik. toUpperCase() ile Plaka girdisini buyuk harflerle yazdirdik.
+        //replaceAll("\\s+", "") ile ara boşluklari temizledik. Boylece kullanicidan alinan plakayi min hata ciktisi ile duzenleyip kullanabiliriz.
         String temizPlaka = plaka.trim().toUpperCase().replaceAll("\\s+", "");
 
-        // Regex'i de boşluksuz haliyle güncelledim (Tire ve boşlukları kaldırdım)
+        // Regex'i burada sartlandirdik uzunlugu da sadece Türk plakasi olmamasi ihtimali ile genis tuttuk.
+        //^ Bu kural en bastan itibaren uygulansin diye.
         String globalPlakaKalibi = "^[A-Z0-9]{5,15}$";
 
         if (!temizPlaka.matches(globalPlakaKalibi)) {
             throw new HataliPlakaException(
-                    "HATA: Plaka geçersiz! (Temizlenmiş hali: " + temizPlaka + ")"
-            );
+                    //hata firlatma sisteme hatali plaka kacmasin nesne hic olusturmasin diye.
+                    "HATA: Plaka geçersiz! (Temizlenmiş hali: " + temizPlaka + ")");
         }
-
         return temizPlaka;
     }
 
-    //1.Dosyadan okudugumuz eski tarihi buraya set edecegiz.
+    //Giris saatimi anlik verilerle degil gercek zamanli kaydedip gerektiginde kayitli veriyi hatirlasin diye.
     public void setGirisZamani(LocalDateTime girisZamani) {
         this.girisZamani = girisZamani;
         this.parktaMi = true;
     }
 
-    //2.Dosyaya yazarken otomobilmi motosikletmi oldugunu anlamak icin
+    //Dosyaya yazarken aynalama yapiyo yani tek tek tur belirtmek yerine
     public String getTip() {
         return this.getClass().getSimpleName();
     }
 
-/* Otopark doluluk ve verimlilik raporu icin alt siniflar bunu doldurmak zorunda.
- Matris (2D Dizi) yapısında teknik olarak her hücre 1 araç tutar Yani aslinda verimlilik acisindan %100 degil fakat
- ArrayList<Arac> ile sadece arclarin girisini kaydetmek yerine matris ile kat konum bilgilerini ozel olarak tutmak istedik*/
-
-
-    //Aracin bir abonesi varmi(varsa true ypksa false doner)
+    //Aracin bir abonesi varmi(varsa true yoksa false doner)
     public boolean isAbone() {
         return this.abone != null;
     }
-
+//gelistirilebilirlik icin biraktik
     public abstract String yerKaplamaDurumu();
 
     @Override
     public void girisYap() {
+
         // Aracın kendi üzerindeki "Saat" ve "Durum" bilgisini güncelliyoruz.
         this.girisZamani = LocalDateTime.now();
         this.parktaMi = true;
-        // --- GÜZELLEŞTİRME KISMI ---
-        // Tarihi "Gün-Ay-Yıl Saat:Dakika:Saniye" formatına çeviren kalıp
+
+        // Tarihi okunabilir formata donusturur
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         // formattedZaman değişkenine o kalıbı uyguluyoruz
         String susluZaman = girisZamani.format(format);
-
-        // Artık ekrana ham veri değil, süslü zamanı yazıyoruz
-        System.out.println(plaka + " giriş saati kaydedildi: " + susluZaman);
+        System.out.println(plaka + "Giriş saati kaydedildi: " + susluZaman);
     }
 
     @Override
     public void cikisYap() {
-        // Araç çıkış statüsüne geçer.
+        // Arac cikis islemleri.
         this.parktaMi = false;
-        System.out.println(plaka + " çıkış işlemi başlatıldı.");
+        System.out.println(plaka + "Çıkış işlemi başlatıldı.");
     }
 
-    //Getter & Setter (Kontrollü Erişim) icin sadece plakanin ne oldugunu gostermek icin
+    //Getter & Setter (Kontrollü Erişim) icin ve sadece plakanin ne oldugunu gostermek icin
     //Daha sonra diger siniflarda baska metotlarda ihityac duyulacagi icin
+    //Encapsulation (Kapsülleme)
     public String getPlaka() {
         return plaka;
     }
-
-
-    /*Sadece Türk plakasi olmamasi durumunda standart bi sart kosmak problem
-    yaratacagi icin bi kontrol sarti olmali fakat cok fazla sart oldugu ıcın standrt bir dongu
-    verimsiz ve hataya acik bi kod yigini olacakti bu yuzden=Regex (Regular Expression) kullandim.
-     */
-
 
     public LocalDateTime getGirisZamani() {
         return girisZamani;

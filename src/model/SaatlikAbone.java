@@ -2,9 +2,8 @@ package model;
 
 public class SaatlikAbone extends Abone {
 
-    /*private olan eriim belirleyicisini kullandik cunku
-    disardan degistirilebilsin istemiyorum baska siniflar tarafindan
-    indirim oranini duruma gore degıstırılebilir yapcaz ama main buraya karisabilsin istemiyoruz.
+    /*private olan erisim belirleyicisini kullandik cunku baska siniflar tarafindan
+    indirim oranini duruma gore degıstırılebilir yapcaz ama main buraya karisabilsin istemiyoruz.Data Hiding (Veri Gizleme)
      */
 
     private double anlikIndirimOrani = 0.20;
@@ -12,23 +11,21 @@ public class SaatlikAbone extends Abone {
     public SaatlikAbone(String aboneId, String adSoyad) {
         /*Abone sinifinda degiskenleri private yapmistik
         sımdı burada bilgileri super yaptik ki burda gelen bilgilere super
-        basamak atlatip aboneye gecmesini saglasin
+        basamak atlatip aboneye gecmesini saglasin"Constructor Delegation" (Kurucuya Havale Etme)
          */
         super(aboneId, adSoyad);
     }
 
     // Polimorfizm(belirli metot icinden duruma gore farklı cevaplar alabilme hali)
-    /*Indirimi degisken yapmak istedim yani ozel gunlerde farkli
-    indirimler uygulanabilsin. Bu yuzden belirlenen orani donduruyo.
-     */
+    //Indirimi degisken yapmak istedim yani farkli indirimler uygulanabilsin. Bu yuzden belirlenen orani donduruyor.
+
     @Override
     public double indirimOraniBelirle() {
         return anlikIndirimOrani;
     }
 
-    /*Program kullanicisi istedigi indirimi istedigi oranda tanimlayabilsin diye
-    gereken esnekligi burda verdik.
-     */
+    //Program kullanicisi istedigi indirimi istedigi oranda tanimlayabilsin diye gereken esnekligi burda verdik.
+
     public void setAnlikIndirimOrani(double yeniOran) {
         // Validation(kontrol):oran olarak verecegi icin 0 ile 1 arasi olmasi kontrolu yoksa "-" ye duser.
         if (yeniOran < 0 || yeniOran > 1.0) {
@@ -39,10 +36,7 @@ public class SaatlikAbone extends Abone {
         System.out.println(">>> Standart Müşteri İndirimi Güncellendi: %" + (yeniOran * 100));
     }
 
-    /*Bu metotta da indirim varsa onu uygulayip yoksa da olan fiyati
-    verecegi metotu ezdik ana metot olan ucretHesapladan.
-     */
-
+    //Bu metotta da indirim varsa onu uygulayip yoksa da olan fiyati verecegi metotu ezdik ana metot olan ucretHesapladan.
 
     @Override
     public String toString() {

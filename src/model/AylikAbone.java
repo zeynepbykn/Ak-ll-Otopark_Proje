@@ -2,14 +2,9 @@ package model;
 
 public class AylikAbone extends Abone {
 
-   /* Aylık abone, otoparkın parasını ay başında toplu olarak (Peşin) ödemiştir.
+   //Aylık abone, otoparkın parasını ay başında pesin oder o yuzden ındırım orani 1 yani ucret yok
 
-    Senin yazdığın kod, Çıkış Kapısındaki Bariyeri kontrol eden koddur.
-
-    Bariyer sisteme sorar: "Bu adamın çıkarken ödemesi gereken borcu var mı?"
-
-    Sistem cevap verir: "Hayır, indirim oranı 1.0 (%100). Yani şu an ödeyeceği tutar 0 TL."*/
-    // Biz yine de bir indirim oranı değişkeni tutalım.
+    // Esneklik icin yine de bir indirim oranı degiskeni var.
     private double aylikIndirimOrani = 1.0;
 
     //Constructor
@@ -23,7 +18,7 @@ public class AylikAbone extends Abone {
         return aylikIndirimOrani;
     }
 
-    //Setter
+    //Setter indirim degistirmek istersek
     public void setAylikIndirimOrani(double yeniOran) {
         if (yeniOran < 0 || yeniOran > 1.0) {
             System.err.println("❌HATA: Geçersiz oran!");
@@ -31,13 +26,6 @@ public class AylikAbone extends Abone {
         }
         this.aylikIndirimOrani = yeniOran;
     }
-
-
-    // ****Parametreler "LocalDateTime" DEĞİL, "double" olmalı.
-    // Proje Planındaki Talimat: "return 0 yaz."
-    // Mantık: Aylık abone ücretini ay başında peşin öder.
-    // Otoparktan çıkarken bariyerde "0 TL" yazar, cebinden para çıkmaz.
-
 
     // Raporlama için toString kullanıyoruz
     @Override

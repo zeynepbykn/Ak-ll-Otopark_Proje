@@ -14,10 +14,11 @@ public class Motosiklet extends Arac {
     //Fiyat Hesaplama(zorunlu override metod)
     @Override
     public double odenecekTutar(double sureDakika) {
-        //Motosiklet tarifesi: Saati 10 TL
         Double saatlikUcret = 10.0;
+
         double normalTutar = (sureDakika / 60.0) * saatlikUcret;
         double indirim = normalTutar * indirimOrani();
+
         System.out.println("Hesaplama: Motosiklet tarifesi(Saati 10TL) uygulandi.");
         return normalTutar - indirim;
     }
