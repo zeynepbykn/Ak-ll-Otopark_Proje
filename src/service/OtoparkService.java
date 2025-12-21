@@ -73,7 +73,7 @@ public class OtoparkService {
                 yerNo++;
             }
         }
-        // 2. KRİTİK NOKTA: Program açılınca eski kayıtları dosyadan geri yüklüyoruz!
+        // Program açılınca eski kayıtları dosyadan geri yüklüyoruz
         eskiAraclariYukle();
     }
 
@@ -139,7 +139,6 @@ public class OtoparkService {
     //Fail Fast
     public boolean otoparkDoluMu() {
         // 1. Toplam kapasiteyi hesapla (Kat Sayısı x Sıra Sayısı)
-        // Senin örneğinde: 3 x 5 = 15
         int toplamKapasite = parkMatrisi.length * parkMatrisi[0].length;
 
         // 2. Şu an içeride kaç araç var? (Map'in boyutuna bakıyoruz)
@@ -151,7 +150,7 @@ public class OtoparkService {
 
     public void aracGiris(Arac arac, int sira, int sutun) throws OtoparkDoluException {
 
-        // 1. Güvenlik Kontrolü: Araç boş mu?
+        // Güvenlik Kontrolü: Araç boş mu?
         if (arac == null) {
             System.err.println("HATA: Boş (null) bir araç otoparka giremez!");
             return; // İşlemi anında durdur
@@ -193,8 +192,10 @@ public class OtoparkService {
         // EKLENECEK: Dosyaya giriş kaydı
         DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun, kaydedilecekId);
 
+        //Hedeflenen yerin park numarasini alıyoruz.
+        int parkNo= hedefYer.getYerNumarasi();
         //Basarı Mesaji
-        System.out.println("✅Araç başariyla " + sira + ". Kat, " + sutun + ". Sıraya park edildi.\n");
+        System.out.println("✅Araç başariyla Park No: "+parkNo +" "+ sira + ". Kat, " + sutun + ". Sıraya park edildi.\n");
         System.out.println("KAYIT: Plaka (" + arac.getPlaka() + ") Otopark listesine kaydedildi.");
     }
 
@@ -226,6 +227,9 @@ public class OtoparkService {
 
         //double ucret=UcretHesapla.standartUcretHesapla(sureDakika);
         double ucret = arac.odenecekTutar(sureDakika);
+        //Park numarasini alıyoruz.
+        int parkNo=yer.getYerNumarasi();
+
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String tarifeTipi = "STANDART TARİFE";
         if (arac.isAbone()) {
@@ -239,6 +243,7 @@ public class OtoparkService {
         System.out.println("       OTOPARK ÇIKIŞ FİŞİ       ");
         System.out.println("=================================");
         System.out.println("Araç Plakası : " + plaka);
+        System.out.println("Park Yeri No : " + parkNo);
         System.out.println("Tarife Tipi  : " + tarifeTipi); // <-- BURASI EKLENDİ
         System.out.println("Giriş Zamanı : " + girisZamani.format(format));
         System.out.println("Çıkış Zamanı : " + cikisZamani.format(format));

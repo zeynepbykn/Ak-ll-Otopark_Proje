@@ -6,25 +6,33 @@ public final class Raporlayici {
     //Private constructor ile disaridan nesne olusturamaz!
     private Raporlayici() {
     }
+    /*
+    Raporlayici sınıfı bir 'Utility Class' (Yardımcı Araç) sınıfıdır. Bu sınıfın amacı veri saklamak (plaka, renk vb.) değil, sadece matematiksel bir işlem yapıp (ekrana yazıp) çıkmaktır.
 
    /*  Raporlayici sınıfı bir 'Utility Class' (Yardımcı Araç) sınıfıdır. Bu sınıfın amacı veri saklamak (plaka, renk vb.) değil, sadece matematiksel bir işlem yapıp (ekrana yazıp) çıkmaktır.
 Bu yüzden içindeki tüm metotları static yaptık. Metotlar statik olduğu için, bu sınıftan new ile bir nesne üretmemize gerek yoktur. Eğer üretilirse RAM'de (hafızada) boşuna yer kaplar.
 Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek için Constructor'ı private yaparak kapıları kilitledim. */
+
+//Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek için Constructor'ı private yaparak kapıları kilitledim."
 
 
     //Otoparkin haritasini çizdirir
     //Dolu yerlere PLAKA, bos yerlere BOS yazar.
     public static void matrisiKonsolaYazdir(ParkYeri[][] parkMatrisi) {
         //ParkYeri turunde parkmatrisini parametre olarak aliyoruz.
-        if (parkMatrisi.length == 0 || parkMatrisi[0].length == 0) {
-            System.out.println("HATA! Otopark matrisi boş.");
-            return;
-        }
 
+        //Matris diye bir nesne olusturulmamis ise
         if (parkMatrisi == null) {
             System.out.println("HATA! Otopark verisi okunamadi.");
             return;
         }
+        //Matris nesnesi olusturulmus ama boyutu 0 mı kontrolu
+            if (parkMatrisi.length == 0 || parkMatrisi[0].length == 0) {
+            System.out.println("HATA! Otopark matrisi boş.");
+            return;
+        }
+
+
         System.out.println("\n--------------------- OTOPARK HARİTASI ---------------------");
 
         int satir = parkMatrisi.length;//Satir sayisini verir
