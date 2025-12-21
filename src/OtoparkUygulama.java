@@ -12,12 +12,12 @@ public class OtoparkUygulama {
 
     public static void main(String[] args) {
 
-        //1. Otoparki hazirliyoruz.(3 kat,5 sıra)
+        //Otoparki hazirliyoruz.(3 kat,5 sıra)
         System.out.println("Sistem baslatiliyor...");
 
-        // === GUN BILGISI (DIZI + DATE + STRING) ===
+        // (DIZI + DATE + STRING)
         String[] gunler = {"Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"};
-
+//Pazartesi için 1 döner. Ama diziler 0'dan başlar. O yüzden -1 yaparak dizideki doğru günü bulduk.
         int gunIndex = java.time.LocalDate.now().getDayOfWeek().getValue() - 1;
         String bugun = gunler[gunIndex];
 
@@ -28,9 +28,10 @@ public class OtoparkUygulama {
         OtoparkService service = new OtoparkService(3, 5);
 
         boolean devamMi = true; //Dongu anahtari
+        //Kullanıcının klavyeden basacağı harfi (a, b, c, q...) tutmak için geçici bir kutu
         char secim = ' ';
 
-        //2. Oyun dongusu basliyor.
+        //dongu
         while (devamMi) {
             System.out.println("\n---------AKILLI OTOPARK MENÜSÜ---------");
             System.out.println("->Araç Girişi Yapmak İçin -a- tuşlayınız.");
@@ -49,7 +50,7 @@ public class OtoparkUygulama {
             System.out.println("-----------------------------------------");
             System.out.println("Seçiminiz: ");
 
-            //Kullanicidan sayi aliniyor.
+
 
             try {
                 String girdi = tarayici.next().toLowerCase();
@@ -59,7 +60,7 @@ public class OtoparkUygulama {
                 System.err.println("❌Hata: Lütfen sadece sayı giriniz!");
                 tarayici.nextLine();//hatali girdiyi temizler.
                 continue; //Dongumuzun basina doner.
-            } //3. Secime Gore Yonlendirme
+            } //Secime Gore Yonlendirme
             switch (secim) {
                 case 'a':
                     aracGirisEkrani(service);
@@ -73,19 +74,19 @@ public class OtoparkUygulama {
                 case 'd':
                     aboneEkleEkrani(service);
                     break;
-                case 'e':
+                case 'e'://k=anahtar v==value
                     service.getAboneler().forEach((k, v) -> System.out.println(k + " -> " + v));
                     break;
 
                 case 'f':
-                    // 1. Service'ten matrisi (binanın planını) istiyoruz
+                    // Service'ten matrisi (binanın planını) istiyoruz
                     ParkYeri[][] matris = service.getParkMatrisi();
                     int sayac = 0;
 
-                    // 2. Tüm katları ve sıraları tek tek geziyoruz
+                    // Tüm katları ve sıraları tek tek geziyoruz
                     for (int i = 0; i < matris.length; i++) {
                         for (int j = 0; j < matris[i].length; j++) {
-                            // 3. Eğer o kutu (park yeri) doluysa sayacı artır
+                            //park yeri doluysa sayacı artır
                             if (matris[i][j].isDoluMu()) {
                                 sayac++;
                             }
@@ -144,7 +145,7 @@ public class OtoparkUygulama {
         }
 
         AracTipi secilenTip = null;
-        // 1. Kullanıcının girdiği sayıyı (1 veya 2) bizim Enum yapımıza çeviriyoruz.
+        // Kullanıcının girdiği sayıyı (1 veya 2) bizim Enum yapımıza çeviriyoruz.
         if (tip == 1) {
             secilenTip = AracTipi.OTOMOBIL;
         } else if (tip == 2) {
@@ -198,7 +199,6 @@ public class OtoparkUygulama {
         }
 
 
-        // --- DÖNGÜ BAŞLIYOR ---
         boolean parkIslemiBasarili = false;
 
         while (!parkIslemiBasarili) {
