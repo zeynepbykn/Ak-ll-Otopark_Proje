@@ -7,7 +7,8 @@ import model.Abone;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
+/*Construtor private fakat sinif final cunku bu sadece yardimci sinif dosya okuyup
+yazmasi yeterli ekstra hiç bir abilitye sahip olmasi gerekmez*/
 public final class DosyaAboneKayit {
 
     private static final String DOSYA_ADI = "aboneler.txt";
@@ -17,6 +18,7 @@ public final class DosyaAboneKayit {
     // Dosyadaki aboneleri Map olarak getir
     public static Map<String, Abone> aboneListesiniGetir() {
         Map<String, Abone> aboneler = new HashMap<>();
+        //buffer tek tek degil toplu islemi sagliyo
         try (BufferedReader reader = new BufferedReader(new FileReader(DOSYA_ADI))) {
             String satir;
             while ((satir = reader.readLine()) != null) {
@@ -41,6 +43,7 @@ public final class DosyaAboneKayit {
 
     // Yeni abone ekleme
     public static void aboneEkle(String id, String adSoyad, String tip) {
+        //new FileWriter(DOSYA_ADI, true) hafizada hatırlama isini bu true yapiyo (Append Mode)
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DOSYA_ADI, true))) {
             writer.write(id + ";" + adSoyad + ";" + tip);
             writer.newLine();

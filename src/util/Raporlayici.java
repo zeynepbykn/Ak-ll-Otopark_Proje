@@ -1,23 +1,16 @@
 package util;
-
 import model.ParkYeri;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public final class Raporlayici {
 
     //bu siniftan nesne uretilmesine gerek yok zaten her sey static olacak
     //Private constructor ile disaridan nesne olusturamaz!
     private Raporlayici() {
     }
-    /*
-    Raporlayici sınıfı bir 'Utility Class' (Yardımcı Araç) sınıfıdır. Bu sınıfın amacı veri saklamak (plaka, renk vb.) değil, sadece matematiksel bir işlem yapıp (ekrana yazıp) çıkmaktır.
 
+   /*  Raporlayici sınıfı bir 'Utility Class' (Yardımcı Araç) sınıfıdır. Bu sınıfın amacı veri saklamak (plaka, renk vb.) değil, sadece matematiksel bir işlem yapıp (ekrana yazıp) çıkmaktır.
 Bu yüzden içindeki tüm metotları static yaptık. Metotlar statik olduğu için, bu sınıftan new ile bir nesne üretmemize gerek yoktur. Eğer üretilirse RAM'de (hafızada) boşuna yer kaplar.
+Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek için Constructor'ı private yaparak kapıları kilitledim. */
 
-Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek için Constructor'ı private yaparak kapıları kilitledim."
-     */
 
     //Otoparkin haritasini çizdirir
     //Dolu yerlere PLAKA, bos yerlere BOS yazar.
@@ -41,7 +34,6 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
         System.out.print("      ");//sol kose bosluk birakiyoruz.
         for (int i = 0; i < sutun; i++) {
 
-            // HESAPLAMA:
             // "   " (3 boşluk) + "Sutun " (6 karakter) + "%-2d" (2 rakam) + "  " (2 boşluk)
             // 3 + 6 + 2 + 2 = 13 Karakter (Tam kutunun genişliği kadar)
 
@@ -88,8 +80,7 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
     public static String formatla(java.time.LocalDateTime tarih) {
         if (tarih == null) return "Belirsiz";
 // Java'nın varsayılan tarih formatı (örn: 2025-12-10T15:30:00) okuması zor olduğu için,
-        // burada özel bir 'Şablon' (Pattern) oluşturuyoruz.
-        // Hedeflediğimiz Format: "Gün/Ay/Yıl Saat:Dakika" (Örn: 10/12/2025 14:30)
+        // burada özel bir sablon (Pattern) oluşturuyoruz.
         java.time.format.DateTimeFormatter formatim = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return tarih.format(formatim);
     }

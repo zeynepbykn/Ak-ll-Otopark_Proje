@@ -5,12 +5,10 @@ import java.time.LocalDateTime;
 
 //bu sınıftan baska bir sinif turetilmemesi icin final yaptik.
 public final class UcretHesapla {
-    /*
-    'final' kelimesini SİLDİK. Artık değeri değişebilir.
+
+  /*  final degil artık değeri değişebilir.
     private static double SAATLIK_UCRET = 20.0;
-
-
- YENİ METOT: Fiyatı değiştirmek için
+Fiyatı değiştirmek için
     public static void setSaatlikUcret(double yeniUcret) {
         SAATLIK_UCRET =
         yeniUcret;
@@ -25,19 +23,17 @@ public final class UcretHesapla {
     private UcretHesapla() {
     }
 
-    //LocalDateTime-> hem tarihi hem saati tutar.
+    //LocalDateTime hem tarihi hem saati tutar.
     public static double parkSuresiDakikaHesapla(LocalDateTime giris, LocalDateTime cikis) {
         //kontrol bloku
         if (giris == null || cikis == null) {
             System.err.println("❌Hata :Giriş veya Çıkış saati boş!");
-            return 0;//Gecersiz tarih veya null kontrolu yapar-> Hata durumunda 0 dondurerek islemi sonlandirir.
+            return 0;//Gecersiz tarih veya null kontrolu yapar hata durumunda 0 dondurerek islemi sonlandirir.
         }
         //  Duration sure = Duration.between(giris, cikis);
         // Dakikayı değil, toplam saniyeyi alıp 60'a bölüyoruz.
-        // Örnek: 90 saniye -> 1.5 dakika olur.
-        //  double hassasDakika = sure.toSeconds() / 60.0;
 
-        //Duration->Javanın kronometre sinifidir.Iki zaman arasindaki zamansal farki hesaplamak icin kullandik.
+        //Duration Javanın kronometre sinifidir.Iki zaman arasindaki zamansal farki hesaplamak icin kullandik.
         double dakikaFarki = Duration.between(giris, cikis).toMinutes();
         //Duration.toMinutes()long döndürür dakikaFarki double Java otomatik olarak long → double çevirir
         // implicit (örtük) type conversion
@@ -49,9 +45,8 @@ public final class UcretHesapla {
         return dakikaFarki;
 
     }
-    /* Bu metot artık kullanılmamaktadır.
-             Bunun yerine Arac sınıflarındaki 'odenecekTutar()' metodunu kullanın.
-            */
+    // Bu metot artık kullanılmamaktadır.  Bunun yerine Arac sınıflarındaki 'odenecekTutar()' metodunu kullandik.
+
 @Deprecated
     public static double standartUcretHesapla(double sureDakika) {
         /*Math.ceil->Tavana yuvarlar.
