@@ -2,7 +2,9 @@ package service;
 
 import model.AylikAbone;
 import model.SaatlikAbone;
+
 import java.time.format.DateTimeFormatter;
+
 import util.DosyaGirisCikisKayit;
 import util.DosyaAboneKayit;
 import model.Abone;
@@ -11,6 +13,7 @@ import exception.OtoparkDoluException;
 import model.Arac;
 import model.ParkYeri;
 import util.UcretHesapla;
+
 import java.util.List;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -20,12 +23,16 @@ public class OtoparkService {
 
     // < key-plaka, value-Parkyeri nesnesi >
     private Map<String, ParkYeri> parktakiAraclar; //kayit defteri
+    private ParkYeri[][] parkMatrisi; //otoparkin fiziksel binasi-kat ve oda
 
     public boolean aboneIdFormatiDogruMu(String id) {
         return id.matches("A\\d{3}");
     }
 
-    // OtoparkService içinde
+    //Key -> AboneId, Value -> Abone nesnesi(ad soyad ) + abonetipide dosya okudugumuzda eklenir.
+    private Map<String, Abone> aboneler = DosyaAboneKayit.aboneListesiniGetir();
+
+    // Get ile aboneleri dondurur.(ıd-adsoyad-abonetipi)
     public Map<String, Abone> getAboneler() {
         return aboneler;
     }
@@ -34,12 +41,10 @@ public class OtoparkService {
     "parkMatrisi, otoparkın fiziksel kat ve sütun düzenini temsil eden ve her hücresinde ParkYeri sınıfından oluşturulmuş bir nesne barındıran iki boyutlu bir dizidir.
      ParkYeri sınıfı model paketinden import edilir."
      */
-    private ParkYeri[][] parkMatrisi; //otoparkin fiziksel binasi-kat ve oda
     //otoparkin sinirlari
-    //daha sonra bu satır ve sutun isimize yarayacak o yuzden constructor blokunun disina bu degiskenleri tanimladik.
+    //daha sonra bu satır ve sutun isimize yarayacak o yuzden constructor blokunun disina bu degiskenleri tanimladik.(sınır kontrolu)
     private final int MAX_SATIR;
     private final int MAX_SUTUN;
-    private Map<String, Abone> aboneler = DosyaAboneKayit.aboneListesiniGetir();
 
     // Bu sinif ilk "new"lendiginde (Main icinde) burasi çalisir
     public OtoparkService(int satir, int sutun) {
@@ -47,18 +52,18 @@ public class OtoparkService {
         this.MAX_SATIR = satir;
         this.MAX_SUTUN = sutun;
 
-
         this.parktakiAraclar = new HashMap<>();//liste suan bos
 // ParkYeri türünde iki boyutlu bir matris için bellek ayırıyoruz
         this.parkMatrisi = new ParkYeri[satir][sutun];
 
         //yer numarasi bir etiket(mesela 15 numarali parkyeri)
         double baslangicDegeri = 1.0;
-        int yerNo = (int) baslangicDegeri; // EXPLICIT TYPE CONVERSION
+        int yerNo = (int) baslangicDegeri; // Acık(Explicit) tip donusumu
 //oda numarası 1 den baslatiyoruz.(matrisler[0][0] dir)
-        //dis dongu->katlari geziyor.
+
 
 // İki boyutlu otopark matrisini ParkYeri nesneleriyle dolduruyoruz
+        //dis dongu->katlari geziyor.
         for (int i = 0; i < satir; i++) {
             //ic dongu-> O kattaki odalari geziyor.
             for (int j = 0; j < sutun; j++) {
@@ -102,7 +107,8 @@ public class OtoparkService {
                 } else if (tip.equals("Motosiklet")) {
                     arac = new Motosiklet(plaka);
                 } else {
-                    arac = new Otomobil(plaka); // Bilinmeyen tipse varsayılan
+                    arac = new Otomobil(plaka); // Bilinmeyen tipse varsayılan olarak otomobil kabul ediyorum
+                    //Yoksa dosyada anlamsiz birsey varsa ve bu blok olmazsa asagida giriszamanını aldıgımız zaman program patlar.(NulPointerException)
                 }
 
                 // 2. Eski zamanı ayarla (Şimdi girmiş gibi olmasın)
@@ -110,8 +116,10 @@ public class OtoparkService {
 
                 // Eğer dosyada bir abone ID yazıyorsa ve o abone listemizde varsa, araca ekle.
                 if (!dosyaAboneId.equals("YOK")) {
-                    if (aboneler.containsKey(dosyaAboneId)) {
+                    if (aboneler.containsKey(dosyaAboneId)) //containsKey -> map icinde verilen key varmı yokmu kontrol eder
+                    {//aboneler.get ile abone nesnesini getirir. ve arac.setAbone ile araca yükleriz.
                         arac.setAbone(aboneler.get(dosyaAboneId));
+                        //aracın abone b
                     }
                 }
 
@@ -178,9 +186,9 @@ public class OtoparkService {
        */
         parktakiAraclar.put(arac.getPlaka(), parkMatrisi[sira][sutun]);// o parkMatrisi[i][j]->oradaki nesneyi cagiririz
 
-        String kaydedilecekId = "YOK";
-        if (arac.isAbone()) {
-            kaydedilecekId = arac.getAbone().getAboneId();
+        String kaydedilecekId = "YOK";//varsayilan yok degeri yazıyoruz.
+        if (arac.isAbone()) {//arac abone ise
+            kaydedilecekId = arac.getAbone().getAboneId();//abone nesnesinden abone ıd bilgisini bu degiskene atıyoruz.
         }
         // EKLENECEK: Dosyaya giriş kaydı
         DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun, kaydedilecekId);
@@ -193,7 +201,7 @@ public class OtoparkService {
     //Cikmak isteyen aracin borccunu hesaplar,tahsil eder ve otoparki siler
     public double aracCikis(String plaka) {
         //Plakadan bize o aracin durdugu parkYeri nesnesini veriyor.
-        //get.(key) diuerek value degerini cagiririz.
+        //get.(key) diyerek value degerini cagiririz.
         ParkYeri yer = parktakiAraclar.get(plaka);
         if (yer == null) {
             throw new IllegalArgumentException("Bu plakaya ait araç otoparkta yok!");
@@ -244,19 +252,6 @@ public class OtoparkService {
 
     }
 
-    private void aboneIdKontrol(String id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Abone ID boş olamaz!");
-        }
-
-        id = id.trim();
-
-        if (!id.matches("^A\\d{3}$")) {
-            throw new IllegalArgumentException(
-                    "Abone ID formatı hatalı! Örnek: A002"
-            );
-        }
-    }
 
     public boolean yeniAboneEkle(String id, String adSoyad, String tip) {
 
@@ -266,11 +261,11 @@ public class OtoparkService {
         }
 
         // AYNI ID VAR MI
-        if (aboneler.containsKey(id)) {
+        if (aboneler.containsKey(id)) { //true yada false doner
             return false;
         }
 
-        // Dosyaya yaz
+        // Abone ekle metodu ile Dosyaya yaz.
         DosyaAboneKayit.aboneEkle(id, adSoyad, tip);
 
         // Map'e ekle
@@ -284,10 +279,11 @@ public class OtoparkService {
 
     //Raporlama ve Gorsellestirme
     //Otoparkin guncel durumunu dis siniflara göstermek icin kullanilir.
-    // !parkMatrisi private oldugundan getter metodu ile otoparkın anlık doluluk gorselini gorebiliriz.
+    // ! parkMatrisi private oldugundan getter metodu ile otoparkın anlık doluluk gorselini gorebiliriz.
     public ParkYeri[][] getParkMatrisi() {
         return parkMatrisi;
 
     }
 
 }
+

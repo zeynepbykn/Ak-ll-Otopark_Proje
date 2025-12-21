@@ -130,7 +130,7 @@ public class OtoparkUygulama {
             System.err.println("❌Hata: Plaka boş olamaz!");
             return;
         }
-
+        //OtoparkUygulama.java -> aracGirisEkrani metodu
         System.out.println("Tip (1-Otomobil---2-Motosiklet): ");
         int tip = -1;
 

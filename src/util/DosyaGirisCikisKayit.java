@@ -15,6 +15,8 @@ public final class DosyaGirisCikisKayit {
     private DosyaGirisCikisKayit() {}
 
     // --- 1. KAYDETME (YAZMA) ---
+
+    //DosyaGirisCikisKayit.java
     // Araç girince Service sınıfı burayı çağırır.
     public static void girisKaydet(String plaka, String tip, int kat, int sira,String aboneId) {
         // FileWriter(..., true) komutundaki 'true', "Dosyanın sonuna ekle" demektir.

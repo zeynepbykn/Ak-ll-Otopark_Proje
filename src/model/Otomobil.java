@@ -13,15 +13,15 @@ public class Otomobil extends Arac {
     }
 
     //Arac sinifinin zorunlu metodu(fiyat hesaplama)
+
+    //OTOMOBİL SINIFI---------
     @Override
     public double odenecekTutar(double sureDakika) {
-//Ornek tarife : Saati 20TL;
+        //Ornek tarife : Saati 20TL;
         Double saatlikUcret = 20.0;
-
         double normalTutar = (sureDakika / 60.0) * saatlikUcret;
 
         double indirim = normalTutar * indirimOrani();
-
         System.out.println("Hesaplama: Otomobil tarifesi (Saati 20 TL) uygulandı.");
         return normalTutar - indirim;
 

@@ -36,10 +36,9 @@ public abstract class Arac implements GirisCikisTakip, Fiyatlanabilir {
 
     private LocalDateTime girisZamani;
     private Boolean parktaMi;//(true/false) olarak
-    private String plaka;
-    /* Constructor nesne hafizada olusurken calisir
-     */
 
+    private String plaka;
+    // Constructor nesne hafizada olusurken calisir
     //Plaka parametreli constructor
     public Arac(String plaka) {
         try {

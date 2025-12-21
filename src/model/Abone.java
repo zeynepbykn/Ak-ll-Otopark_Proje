@@ -23,6 +23,8 @@ public abstract class Abone  {
     icin kendine has sekilde calismasini saglayan komut.
   */
     // Yani gerekli alt siniflar bunu override etmek zorunda.
+
+
     public abstract double indirimOraniBelirle();
 
     //Getter ve Setter.
