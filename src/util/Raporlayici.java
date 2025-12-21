@@ -50,12 +50,12 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
         }
         System.out.println("\n      " + "-------------".repeat(sutun)); // Ayırıcı çizgi
         // .repeat --> icine yazdigimiz degisken kadar tre isaretini koyacak =bu sayede tablonun genisligi kadar otomatik cizgi ceker.
-
+// 6 bosluk bırakıyoruzki kat no yazısı ile alt saturda tre cakismasin.
 
         //2. MATRİSİ ÇİZME (Tersten - Çatıdan Zemine)
-        // DİKKAT: i = satir - 1 (En üst kat), i >= 0 (Zemin kata kadar)
+        //  i = satir - 1 (En üst kat), i >= 0 (Zemin kata kadar)
         for (int i = satir - 1; i >= 0; i--) {
-//sol tarafa kat numarasini yaziyor
+//sol tarafa kat numarasini yaziyor.
             System.out.printf("Kat %d |", i);//printf ve %d ile hizali yazdirir.
 
             //O kattaki odalari(sutunlari) soldan saga gezer
@@ -66,7 +66,7 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
                 if (alan.isDoluMu() && alan.getParkEdenArac() != null) {
                     //Dolu ise o aracn plakasini cekelim.
                     String plaka = alan.getParkEdenArac().getPlaka();
-                    //Plakayi yazdir.%-8s :Plaka icin 8 karakterlik yer ayirir ve sola yaslar.
+                    //Plakayi yazdir.%-10s :Plaka icin 10 karakterlik yer ayirir ve sola yaslar.
                     System.out.printf("[%-10s] ", plaka);
                 } else {
                     //Bossa standart bos kutu cizilir.
@@ -81,16 +81,6 @@ Ben de hafıza yönetimini doğru yapmak ve gereksiz nesne üretimini engellemek
             System.out.println("      " + "-------------".repeat(sutun));
         }
         System.out.println("------------------------------------------------------------\n");
-    }
-
-    //Tarih-Saat formatlamak icin yardimci metot
-    //Gelen LocalDateTime 'i gun/ay/yil saat:dakika formatina cevirir(daha duzgun gozukur.)
-    public static String formatla(java.time.LocalDateTime tarih) {
-        if (tarih == null) return "Belirsiz";
-// Java'nın varsayılan tarih formatı (örn: 2025-12-10T15:30:00) okuması zor olduğu için,
-        // burada özel bir sablon (Pattern) oluşturuyoruz.
-        java.time.format.DateTimeFormatter formatim = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        return tarih.format(formatim);
     }
 
 }

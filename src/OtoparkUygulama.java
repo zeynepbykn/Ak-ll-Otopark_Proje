@@ -2,7 +2,7 @@ import model.*;
 import service.OtoparkService;
 import util.Raporlayici;
 import model.AracTipi;
-
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class OtoparkUygulama {
@@ -18,7 +18,7 @@ public class OtoparkUygulama {
         // (DIZI + DATE + STRING)
         String[] gunler = {"Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"};
 //Pazartesi için 1 döner. Ama diziler 0'dan başlar. O yüzden -1 yaparak dizideki doğru günü bulduk.
-        int gunIndex = java.time.LocalDate.now().getDayOfWeek().getValue() - 1;
+        int gunIndex = LocalDate.now().getDayOfWeek().getValue() - 1;
         String bugun = gunler[gunIndex];
 
         String bugunBuyuk = bugun.toUpperCase();
@@ -131,7 +131,7 @@ public class OtoparkUygulama {
             System.err.println("❌Hata: Plaka boş olamaz!");
             return;
         }
-        //OtoparkUygulama.java -> aracGirisEkrani metodu
+
         System.out.println("Tip (1-Otomobil---2-Motosiklet): ");
         int tip = -1;
 
@@ -175,7 +175,7 @@ public class OtoparkUygulama {
             System.out.println("Abone ID (Yoksa Enter'a basiniz):");
             String aboneId = tarayici.nextLine().trim();
 
-            // Enter'a basıldıysa → abonesiz devam
+            // Enter'a basıldıysa → abonesiz devam.While dongusunden cıkar.
             if (aboneId.isEmpty()) {
                 break;
             }
@@ -183,7 +183,7 @@ public class OtoparkUygulama {
             // FORMAT KONTROLÜ (Axxx)
             if (!aboneId.matches("A\\d{3}")) {
                 System.err.println("❗Hata:Abone ID formata uygun değil.");
-                continue;
+                continue;//continue ile while dongusun basına gider.
             }
 
             // KAYITLI MI?
@@ -193,6 +193,7 @@ public class OtoparkUygulama {
             }
 
             // HER ŞEY DOĞRU → ABONEYİ ATA
+            //Aboneler mapinden get aboneId ile abone nesnesi alınır ve  Aracın abonesine atar.
             arac.setAbone(service.getAboneler().get(aboneId));
             System.out.println("Abone girişi algılandı.");
             break;
@@ -216,7 +217,7 @@ public class OtoparkUygulama {
                 kat = tarayici.nextInt();
                 if (kat == -1) {
                     System.out.println("❗İşlem iptal edildi.❗");
-                    return;
+                    return;//while(devamMi) döngüsü hala çalıştığı için,menu kısmına gider.
                 }
 
                 System.out.print("Hangi Sira (0-" + sonSiraIndex + "): ");
@@ -244,17 +245,14 @@ public class OtoparkUygulama {
 
         System.out.println("Çıkış yapacak aracın plakası: ");
 
-        // DÜZELTME 1: Plakadaki tüm boşlukları siliyoruz (örn: "06 DDL 107" -> "06DDL107")
+        //  Plakadaki tüm boşlukları siliyoruz (örn: "06 DDL 107" -> "06DDL107")
         String plaka = tarayici.nextLine().toUpperCase().replaceAll("\\s+", "");
         try {
             // Service sınıfı zaten detaylı fişi ekrana basıyor.
             // Biz sadece dönen rakamı alıp aşağıda göstereceğiz.
             double ucret = service.aracCikis(plaka);
 
-            // DÜZELTME 2: Buradaki "Standart ücret uygulandı" vs. kodlarını SİLDİK.
-            // Çünkü Service sınıfı zaten fişin üzerine "ABONE TARİFESİ" yazıyor.
-
-            // DÜZELTME 3: Parayı virgülden sonra 2 basamak olacak şekilde düzeltiyoruz.
+            //  Parayı virgülden sonra 2 basamak olacak şekilde düzeltiyoruz.
             String formatliUcret = String.format("%.2f", ucret);
 
             System.out.println("------------------------------------");

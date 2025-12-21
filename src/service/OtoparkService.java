@@ -162,6 +162,7 @@ public class OtoparkService {
         }
 
         ParkYeri hedefYer = parkMatrisi[sira][sutun];
+
         // Hedeflenen kutuyu (nesneyi) seçiyoruz ve "Dolu musun?" diye soruyoruz.
         if (hedefYer.isDoluMu()) {
             throw new OtoparkDoluException("DİKKAT: " + sira + ".Kat, " + sutun + ".sıra zaten dolu!!");
@@ -193,9 +194,9 @@ public class OtoparkService {
         DosyaGirisCikisKayit.girisKaydet(arac.getPlaka(), arac.getTip(), sira, sutun, kaydedilecekId);
 
         //Hedeflenen yerin park numarasini alıyoruz.
-        int parkNo= hedefYer.getYerNumarasi();
+        int parkNo = hedefYer.getYerNumarasi();
         //Basarı Mesaji
-        System.out.println("✅Araç başariyla Park No: "+parkNo +" "+ sira + ". Kat, " + sutun + ". Sıraya park edildi.\n");
+        System.out.println("✅Araç başariyla Park No: " + parkNo + " " + sira + ". Kat, " + sutun + ". Sıraya park edildi.\n");
         System.out.println("KAYIT: Plaka (" + arac.getPlaka() + ") Otopark listesine kaydedildi.");
     }
 
@@ -214,7 +215,7 @@ public class OtoparkService {
         if (arac == null) {
             throw new IllegalStateException("Park yeri dolu görünüyor ama araç yok!");
         }
-
+//Dosyadan aracin giris zamanini aliyoruz ve sonra dosyadan o araci siliyoruz.
         LocalDateTime girisZamani = DosyaGirisCikisKayit.girisZamaniGetirVeSil(plaka);
         if (girisZamani == null) {
             throw new IllegalStateException("Giriş kaydı bulunamadı!");
@@ -228,7 +229,7 @@ public class OtoparkService {
         //double ucret=UcretHesapla.standartUcretHesapla(sureDakika);
         double ucret = arac.odenecekTutar(sureDakika);
         //Park numarasini alıyoruz.
-        int parkNo=yer.getYerNumarasi();
+        int parkNo = yer.getYerNumarasi();
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String tarifeTipi = "STANDART TARİFE";

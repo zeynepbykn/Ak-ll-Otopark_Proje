@@ -16,7 +16,6 @@ public class Otomobil extends Arac {
 
     //Arac sinifinin zorunlu metodu(fiyat hesaplama)
 
-    //OTOMOBİL SINIFI---------
     @Override
     public double odenecekTutar(double sureDakika) {
         //Ornek tarife : Saati 20TL;
